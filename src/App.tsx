@@ -5,359 +5,280 @@ import './App.css'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
-type AIRoute = 'webllm-primary' | 'webllm-fallback' | 'wllama-fallback' | 'heuristic'
 
-type Chapter = {
-  id: string
-  title: string
-  level: 'Beginner' | 'Intermediate' | 'Advanced'
-  outcomes: string[]
-  challenge: string
-  rubric: string[]
-  files: FileMap
-}
-
-const rfVersions = ['3.1', '3.2', '4.1', '5.0', '6.1']
+type Chapter = { id: string; title: string; files: FileMap; objective: string }
 
 const chapters: Chapter[] = [
   {
-    id: 'ch1',
-    title: 'Variables + Shared Keywords',
-    level: 'Beginner',
-    outcomes: ['Use variables.py', 'Call keywords from resource file', 'Understand suite structure'],
-    challenge: 'Add one new test case that reuses existing keywords and variables.',
-    rubric: ['Has *** Test Cases ***', 'Calls shared keyword', 'Uses variable from variables.py'],
+    id: '1',
+    title: 'Foundations: Variables + Keywords',
+    objective: 'Learn multi-file structure and shared keywords.',
     files: {
-      'tests/01_variables_keywords.robot': `*** Settings ***
-Variables    ../resources/variables.py
-Resource     ../resources/common.resource
-
-*** Test Cases ***
-Login With Shared Data
-    Open App
-    Login As Default User
-    Verify Dashboard Title
-`,
-      'resources/common.resource': `*** Keywords ***
-Open App
-    Log    Opening ${'$'}{BASE_URL}
-
-Login As Default User
-    Log    Login with ${'$'}{DEFAULT_USER}
-
-Verify Dashboard Title
-    Should Be Equal    ${'$'}{EXPECTED_TITLE}    Demo Dashboard
-`,
-      'resources/variables.py': `BASE_URL = "https://example.test"
-DEFAULT_USER = "demo.user"
-EXPECTED_TITLE = "Demo Dashboard"
-`,
+      'tests/01_foundation.robot': `*** Settings ***\nVariables    ../resources/variables.py\nResource     ../resources/common.resource\n\n*** Test Cases ***\nSample Smoke\n    Open App\n    Login As Default User`,
+      'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    Opening ${'$'}{BASE_URL}\n\nLogin As Default User\n    Log    Login with ${'$'}{DEFAULT_USER}`,
+      'resources/variables.py': `BASE_URL = "https://example.test"\nDEFAULT_USER = "demo.user"\n`,
     },
   },
   {
-    id: 'ch2',
-    title: 'POM + Locators + Env Override',
-    level: 'Intermediate',
-    outcomes: ['Use page objects', 'Centralize locators', 'Override env vars from CLI'],
-    challenge: 'Add a logout scenario using the same page object model style.',
-    rubric: ['Uses resource page object', 'Has locator variables', 'Includes override command note'],
+    id: '2',
+    title: 'POM + Locators',
+    objective: 'Use page object resources and locator variables.',
     files: {
-      'tests/02_pom_style.robot': `*** Settings ***
-Variables    ../resources/env.py
-Resource     ../pages/login_page.resource
-
-*** Test Cases ***
-Login Through POM
-    Given User Opens Login Page
-    When User Signs In
-    Then User Should Reach Home
-`,
-      'pages/login_page.resource': `*** Variables ***
-${'$'}{LOGIN_USER_INPUT}    css:#username
-${'$'}{LOGIN_PASS_INPUT}    css:#password
-${'$'}{LOGIN_BUTTON}        css:button[type="submit"]
-
-*** Keywords ***
-Given User Opens Login Page
-    Log    Open ${'$'}{APP_URL}
-
-When User Signs In
-    Log    Type into ${'$'}{LOGIN_USER_INPUT}
-    Log    Type into ${'$'}{LOGIN_PASS_INPUT}
-    Log    Click ${'$'}{LOGIN_BUTTON}
-
-Then User Should Reach Home
-    Log    Assert URL contains /home
-`,
-      'resources/env.py': `APP_URL = "https://example.test/login"
-`,
-      'README-run.md': `Run override example:\nrobot -v APP_URL:https://staging.example.test/login tests/02_pom_style.robot`,
-    },
-  },
-  {
-    id: 'ch3',
-    title: 'Reports + Tags + Metadata',
-    level: 'Advanced',
-    outcomes: ['Generate report/log/output', 'Use tags and metadata', 'Document tests for teams'],
-    challenge: 'Add one regression-tagged test and include clear test documentation.',
-    rubric: ['Uses Test Tags', 'Has Metadata', 'Includes report command'],
-    files: {
-      'tests/03_reporting.robot': `*** Settings ***
-Documentation    Example suite for report and log generation
-Metadata         Owner    QA Team
-Metadata         Sprint   Sprint-12
-Test Tags        smoke    reporting
-
-*** Test Cases ***
-Checkout Smoke
-    [Documentation]    Validates core checkout path
-    Log    Checkout flow pass
-
-Profile Update Smoke
-    [Documentation]    Validates profile update
-    Log    Profile update pass
-`,
-      'README-run.md': `Suggested command:\nrobot --output output.xml --log log.html --report report.html tests/03_reporting.robot`,
+      'tests/02_pom.robot': `*** Settings ***\nResource    ../pages/login_page.resource\n\n*** Test Cases ***\nLogin Through POM\n    Given User Opens Login Page\n    When User Signs In\n    Then User Should Reach Home`,
+      'pages/login_page.resource': `*** Variables ***\n${'$'}{LOGIN_USER}    css:#username\n${'$'}{LOGIN_PASS}    css:#password\n\n*** Keywords ***\nGiven User Opens Login Page\n    Log    Open login page\nWhen User Signs In\n    Log    Type creds and submit\nThen User Should Reach Home\n    Log    Assert /home`,
     },
   },
 ]
 
-async function ensurePyodide() {
+async function ensurePyodideAndRobot(setTerminal: (x: (prev: string[]) => string[]) => void) {
   const w = window as PyodideWindow
-  if (w.__pyodide) return w.__pyodide
   if (!w.loadPyodide) {
     await new Promise<void>((resolve, reject) => {
       const script = document.createElement('script')
       script.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.3/full/pyodide.js'
       script.onload = () => resolve()
-      script.onerror = () => reject(new Error('Failed to load Pyodide script'))
+      script.onerror = () => reject(new Error('Failed to load Pyodide'))
       document.body.appendChild(script)
     })
   }
-  const pyodide = await w.loadPyodide?.({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.3/full/' })
-  if (!pyodide) throw new Error('Pyodide unavailable')
-  w.__pyodide = pyodide
+
+  if (!w.__pyodide) {
+    setTerminal((p) => [...p, '$ boot pyodide', 'Loading Python runtime...'])
+    w.__pyodide = await w.loadPyodide?.({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.3/full/' })
+  }
+
+  const pyodide = w.__pyodide
+  if (!pyodide.globals.get('__robot_ready__')) {
+    setTerminal((p) => [...p, 'Installing robotframework (first run may take time)...'])
+    await pyodide.loadPackage('micropip')
+    await pyodide.runPythonAsync(`
+import micropip
+await micropip.install('robotframework')
+__robot_ready__ = True
+`)
+    setTerminal((p) => [...p, 'robotframework installed'])
+  }
   return pyodide
 }
 
 function App() {
-  const [selectedChapter, setSelectedChapter] = useState(chapters[0])
-  const [files, setFiles] = useState<FileMap>(chapters[0].files)
-  const [activeFile, setActiveFile] = useState(Object.keys(chapters[0].files)[0])
-  const [rfVersion, setRfVersion] = useState('6.1')
-  const [output, setOutput] = useState('Welcome. Pick chapter → edit files → run checks.')
-  const [running, setRunning] = useState(false)
-  const [aiStatus, setAiStatus] = useState('Not initialized')
-  const [aiRoute, setAiRoute] = useState<AIRoute>('heuristic')
-  const [engine, setEngine] = useState<any>(null)
-  const [toast, setToast] = useState('')
+  const [selectedChapterId, setSelectedChapterId] = useState(chapters[0].id)
+  const selectedChapter = useMemo(() => chapters.find((c) => c.id === selectedChapterId)!, [selectedChapterId])
+  const [files, setFiles] = useState<FileMap>(selectedChapter.files)
+  const [activeFile, setActiveFile] = useState(Object.keys(selectedChapter.files)[0])
+  const [terminal, setTerminal] = useState<string[]>(['Robot IDE ready. Type a command below.'])
+  const [cmd, setCmd] = useState('robot tests/01_foundation.robot')
+  const [rightOpen, setRightOpen] = useState(false)
+  const [aiText, setAiText] = useState('Click "Grade Chapter Task" to open AI Coach.')
+  const [output, setOutput] = useState('')
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
 
-  const pulse = (m: string) => {
-    setToast(m)
-    window.setTimeout(() => setToast(''), 1600)
-  }
-
   const loadChapter = (id: string) => {
-    const chapter = chapters.find((c) => c.id === id)
-    if (!chapter) return
-    setSelectedChapter(chapter)
-    setFiles(chapter.files)
-    const first = Object.keys(chapter.files).sort()[0]
-    setActiveFile(first)
-    setOutput(`Loaded ${chapter.title}\n\nOutcomes:\n- ${chapter.outcomes.join('\n- ')}\n\nChallenge:\n${chapter.challenge}`)
-    pulse(`${chapter.level} chapter loaded`)
+    const c = chapters.find((x) => x.id === id)
+    if (!c) return
+    setSelectedChapterId(id)
+    setFiles(c.files)
+    setActiveFile(Object.keys(c.files).sort()[0])
+    setTerminal((p) => [...p, `Loaded chapter ${id}: ${c.title}`])
   }
 
-  const runValidation = () => {
-    const text = files[activeFile] || ''
-    const checks = [
-      text.includes('*** Test Cases ***'),
-      text.includes('*** Settings ***') || activeFile.endsWith('.md'),
-      text.length > 30,
-    ]
-    setOutput([
-      `Robot Framework v${rfVersion} check complete`,
-      `File: ${activeFile}`,
-      `Quality: ${checks.filter(Boolean).length}/3`,
-      checks[0] ? '✔ Test Cases section' : '✖ Add *** Test Cases ***',
-      checks[1] ? '✔ Settings/Doc structure' : '✖ Add *** Settings ***',
-      '',
-      `Challenge: ${selectedChapter.challenge}`,
-    ].join('\n'))
-    pulse('Validation complete')
+  const createFile = () => {
+    const name = prompt('New file path')
+    if (!name || files[name]) return
+    setFiles((p) => ({ ...p, [name]: '' }))
+    setActiveFile(name)
   }
 
-  const runPyodideCheck = async () => {
-    if (!activeFile) return
-    setRunning(true)
-    try {
-      const pyodide = await ensurePyodide()
-      pyodide.globals.set('robot_text', files[activeFile] || '')
-      const result = pyodide.runPython(`
-lines = robot_text.splitlines()
-'Pyodide runtime check complete\\nLine count: ' + str(len(lines))
-      `)
-      setOutput(String(result))
-      pulse('Runtime check complete')
-    } catch (e) {
-      setOutput(`Runtime error: ${(e as Error).message}`)
-    } finally {
-      setRunning(false)
-    }
+  const createFolder = () => {
+    const folder = prompt('New folder name (example: pages)')
+    if (!folder) return
+    const placeholder = `${folder}/.keep`
+    if (files[placeholder]) return
+    setFiles((p) => ({ ...p, [placeholder]: '' }))
+    setActiveFile(placeholder)
   }
 
-  const initAI = async () => {
-    if (engine) return engine
-    setAiStatus('Initializing...')
-    try {
-      const webllm = await import('@mlc-ai/web-llm')
-      try {
-        const e = await webllm.CreateMLCEngine('Qwen2.5-1.5B-Instruct-q4f16_1-MLC')
-        setEngine(e)
-        setAiRoute('webllm-primary')
-        setAiStatus('Ready with Qwen2.5-1.5B')
-        return e
-      } catch {
-        const e2 = await webllm.CreateMLCEngine('Llama-3.2-1B-Instruct-q4f16_1-MLC')
-        setEngine(e2)
-        setAiRoute('webllm-fallback')
-        setAiStatus('Ready with Llama-3.2-1B')
-        return e2
-      }
-    } catch {
-      setAiRoute('wllama-fallback')
-      setAiStatus('WebLLM unavailable. Fallback hook active.')
-      return null
-    }
+  const renameFile = () => {
+    const next = prompt('Rename file to', activeFile)
+    if (!next || next === activeFile || files[next]) return
+    const content = files[activeFile]
+    setFiles((p) => {
+      const c = { ...p }
+      delete c[activeFile]
+      c[next] = content
+      return c
+    })
+    setActiveFile(next)
   }
 
-  const checkMySolution = async () => {
-    const text = files[activeFile] || ''
-    const activeEngine = engine || await initAI()
-    if (activeEngine) {
-      const r = await activeEngine.chat.completions.create({
-        messages: [
-          { role: 'system', content: 'Grade this Robot Framework solution with concise feedback.' },
-          { role: 'user', content: `Rubric:\n- ${selectedChapter.rubric.join('\n- ')}\n\nFile:\n${text}` },
-        ],
-      })
-      setOutput(r.choices?.[0]?.message?.content || 'No response')
-      return
-    }
-    const hits = selectedChapter.rubric.filter((r) => text.toLowerCase().includes(r.toLowerCase().split(' ')[1] || ''))
-    setOutput(`Heuristic chapter rubric result: ${hits.length}/${selectedChapter.rubric.length}\n- ${selectedChapter.rubric.join('\n- ')}`)
+  const deleteFile = () => {
+    if (!confirm(`Delete ${activeFile}?`)) return
+    setFiles((p) => {
+      const c = { ...p }
+      delete c[activeFile]
+      return c
+    })
+    const next = fileList.filter((f) => f !== activeFile)[0] || ''
+    setActiveFile(next)
   }
 
-  const exportProject = async () => {
+  const exportZip = async () => {
     const zip = new JSZip()
-    Object.entries(files).forEach(([path, content]) => zip.file(path, content))
+    Object.entries(files).forEach(([k, v]) => zip.file(k, v))
     const blob = await zip.generateAsync({ type: 'blob' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `robot-framework-ide-${selectedChapter.id}.zip`
+    a.download = `chapter-${selectedChapterId}.zip`
     a.click()
     URL.revokeObjectURL(url)
-    pulse('Project exported')
   }
 
-  const importProject = async (file?: File) => {
+  const importZip = async (file?: File) => {
     if (!file) return
     const zip = await JSZip.loadAsync(await file.arrayBuffer())
     const next: FileMap = {}
-    for (const name of Object.keys(zip.files)) {
-      const f = zip.files[name]
-      if (!f.dir) next[name] = await f.async('string')
+    for (const path of Object.keys(zip.files)) {
+      const f = zip.files[path]
+      if (!f.dir) next[path] = await f.async('string')
     }
-    const keys = Object.keys(next)
-    if (keys.length) {
+    if (Object.keys(next).length) {
       setFiles(next)
-      setActiveFile(keys.sort()[0])
-      setOutput(`Imported ${keys.length} files from ${file.name}`)
-      pulse('Project imported')
+      setActiveFile(Object.keys(next).sort()[0])
     }
   }
 
+  const runCommand = async () => {
+    const command = cmd.trim()
+    if (!command) return
+    setTerminal((p) => [...p, `$ ${command}`])
+
+    try {
+      const pyodide = await ensurePyodideAndRobot(setTerminal)
+
+      // sync editor files to pyodide FS
+      await pyodide.runPythonAsync(`
+import os
+for p in ['tests','resources','pages','artifacts']:
+    os.makedirs(p, exist_ok=True)
+`)
+      for (const [path, content] of Object.entries(files)) {
+        const escaped = content.replace(/\\/g, '\\\\').replace(/`/g, '\\`')
+        const dir = path.includes('/') ? path.split('/').slice(0, -1).join('/') : ''
+        if (dir) await pyodide.runPythonAsync(`import os; os.makedirs('${dir}', exist_ok=True)`)
+        await pyodide.runPythonAsync(`open('${path}','w',encoding='utf-8').write(
+'''${escaped}''')`)
+      }
+
+      if (command.startsWith('robot ')) {
+        const args = command.replace(/^robot\s+/, '').split(' ').filter(Boolean)
+        const py = `
+from robot import run_cli
+import io, contextlib
+buf = io.StringIO()
+code = 0
+try:
+    with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
+        code = run_cli(${JSON.stringify(args)}, exit=False)
+except Exception as e:
+    buf.write(str(e))
+buf.getvalue()
+`
+        const result = await pyodide.runPythonAsync(py)
+        const text = String(result || '').trim() || '(no output)'
+        setTerminal((p) => [...p, text])
+        setOutput(text)
+      } else if (command === 'help') {
+        setTerminal((p) => [...p, 'Commands:', 'robot <suite.robot>', 'help', 'clear'])
+      } else if (command === 'clear') {
+        setTerminal(['Terminal cleared.'])
+      } else {
+        setTerminal((p) => [...p, 'Unknown command. Try: help'])
+      }
+    } catch (e) {
+      setTerminal((p) => [...p, `Error: ${(e as Error).message}`])
+    }
+  }
+
+  const gradeChapterTask = () => {
+    setRightOpen(true)
+    const text = files[activeFile] || ''
+    const score = [text.includes('*** Settings ***'), text.includes('*** Test Cases ***'), text.length > 40].filter(Boolean).length
+    setAiText(`Chapter: ${selectedChapter.title}\n\nObjective: ${selectedChapter.objective}\n\nRubric score: ${score}/3\n- Include Settings\n- Include Test Cases\n- Add meaningful steps`) 
+  }
+
   return (
-    <div className="layout">
-      {toast && <div className="toast">{toast}</div>}
-      <aside className="sidebar">
-        <h2>Robot Framework IDE</h2>
-        <p className="subtle">No setup. Practical chapters. Real multi-file learning.</p>
-
-        <h3>Chapter Navigator</h3>
-        <div className="templateButtons">
-          {chapters.map((c) => (
-            <button key={c.id} onClick={() => loadChapter(c.id)}>{c.level}: {c.title}</button>
-          ))}
+    <div className="vscode">
+      <header className="topbar">
+        <div>
+          <strong>Robot Framework IDE</strong>
+          <span className="muted"> · Browser-first learning lab</span>
         </div>
-
-        <label>Robot Version</label>
-        <select value={rfVersion} onChange={(e) => setRfVersion(e.target.value)}>
-          {rfVersions.map((v) => <option key={v} value={v}>v{v}</option>)}
-        </select>
-
-        <div className="templateButtons" style={{ marginTop: 10 }}>
-          <button onClick={exportProject}>Export ZIP</button>
-          <button onClick={() => importRef.current?.click()}>Import ZIP</button>
-          <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importProject(e.target.files?.[0])} />
+        <div className="top-actions">
+          <label>Chapter</label>
+          <select value={selectedChapterId} onChange={(e) => loadChapter(e.target.value)}>
+            {chapters.map((c) => <option key={c.id} value={c.id}>Chapter {c.id}: {c.title}</option>)}
+          </select>
+          <button onClick={gradeChapterTask}>Grade Chapter Task</button>
         </div>
+      </header>
 
-        <h3>Files</h3>
-        <ul>
-          {fileList.map((file) => (
-            <li key={file} className={file === activeFile ? 'active' : ''} onClick={() => setActiveFile(file)}>{file}</li>
-          ))}
+      <aside className="left">
+        <div className="explorer-head">
+          <strong>Explorer</strong>
+          <div className="icon-actions">
+            <button title="New File" onClick={createFile}>＋F</button>
+            <button title="New Folder" onClick={createFolder}>＋D</button>
+            <button title="Rename" onClick={renameFile}>✎</button>
+            <button title="Delete" onClick={deleteFile}>🗑</button>
+          </div>
+        </div>
+        <div className="icon-actions block">
+          <button onClick={exportZip}>Export</button>
+          <button onClick={() => importRef.current?.click()}>Import</button>
+          <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importZip(e.target.files?.[0])} />
+        </div>
+        <ul className="filetree">
+          {fileList.map((f) => <li key={f} className={f === activeFile ? 'active' : ''} onClick={() => setActiveFile(f)}>{f}</li>)}
         </ul>
       </aside>
 
-      <main className="main">
-        <div className="hero">
-          <h1>{selectedChapter.title}</h1>
-          <p>{selectedChapter.challenge}</p>
-        </div>
-
-        <div className="guide">
-          <div className="guideHead"><strong>You will learn</strong></div>
-          <div className="steps">
-            {selectedChapter.outcomes.map((o, i) => <div key={o}><span>{i + 1}</span>{o}</div>)}
-          </div>
-        </div>
-
-        <div className="toolbar">
-          <span>{activeFile || 'No file selected'}</span>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button onClick={runValidation} disabled={!activeFile}>Run Check</button>
-            <button onClick={runPyodideCheck} disabled={!activeFile || running}>{running ? 'Running...' : 'Run Runtime Check'}</button>
-            <button onClick={checkMySolution} disabled={!activeFile}>Check My Solution</button>
-          </div>
-        </div>
-
+      <main className="center">
+        <div className="editor-head">{activeFile || 'No file selected'}</div>
         <Editor
-          height="50vh"
+          height="48vh"
           language="python"
           value={activeFile ? files[activeFile] : ''}
-          onChange={(v) => activeFile && setFiles((prev) => ({ ...prev, [activeFile]: v ?? '' }))}
+          onChange={(v) => activeFile && setFiles((p) => ({ ...p, [activeFile]: v ?? '' }))}
           theme="vs-dark"
-          options={{ minimap: { enabled: false }, fontSize: 14, smoothScrolling: true, cursorBlinking: 'smooth' }}
+          options={{ minimap: { enabled: false }, fontSize: 14 }}
         />
-
-        <section className="panels">
-          <div>
-            <h3>Output</h3>
-            <pre>{output}</pre>
+        <div className="terminal">
+          <div className="terminal-log">
+            {terminal.slice(-120).map((line, i) => <div key={i}>{line}</div>)}
           </div>
-          <div>
-            <h3>AI Route</h3>
-            <p><strong>Current route:</strong> {aiRoute}</p>
-            <p><strong>Status:</strong> {aiStatus}</p>
-            <p className="subtle">Route: Qwen 1.5B → Llama 1B → wllama hook → heuristic.</p>
+          <div className="terminal-input">
+            <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="robot tests/01_foundation.robot" onKeyDown={(e) => e.key === 'Enter' && runCommand()} />
+            <button onClick={runCommand}>Run CLI</button>
           </div>
-        </section>
+        </div>
       </main>
+
+      <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`}>
+        <div className="right-head">
+          <strong>AI Coach</strong>
+          <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? 'Collapse' : 'Open'}</button>
+        </div>
+        {rightOpen && (
+          <>
+            <pre className="coach">{aiText}</pre>
+            <h4>CLI Output</h4>
+            <pre className="coach">{output || 'No output yet.'}</pre>
+          </>
+        )}
+      </aside>
     </div>
   )
 }
