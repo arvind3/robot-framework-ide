@@ -84,6 +84,8 @@ function App() {
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
+  const buildIdFull = String((import.meta as any).env?.VITE_BUILD_ID || 'local')
+  const buildIdShort = buildIdFull.slice(0, 5)
 
   const loadChapter = (id: string) => {
     const c = chapters.find((x) => x.id === id)
@@ -392,6 +394,7 @@ buf.getvalue()
         <div className="left-footer">
           <button onClick={exportZip}>Export</button>
           <button onClick={() => importRef.current?.click()}>Import</button>
+          <span className="build-inline" title={`build ${buildIdFull}`}>build {buildIdShort}</span>
           <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importZip(e.target.files?.[0])} />
         </div>
       </aside>
@@ -486,7 +489,6 @@ buf.getvalue()
         </div>
       )}
 
-      <div className="build-stamp">build {(import.meta as any).env?.VITE_BUILD_ID || 'local'}</div>
     </div>
   )
 }
