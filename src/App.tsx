@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react'
 import Editor from '@monaco-editor/react'
 import JSZip from 'jszip'
 import './App.css'
@@ -131,6 +131,7 @@ function App() {
   const [runtimeHealth, setRuntimeHealth] = useState<'ok'|'degraded'>('ok')
   const [fetchError, setFetchError] = useState('')
   const [artifacts, setArtifacts] = useState<Artifact[]>([])
+  const [contextMenu, setContextMenu] = useState<{x:number;y:number;file:string}|null>(null)
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -288,6 +289,8 @@ buf.getvalue()
     }
   }
 
+  const toggleAICoach = () => setRightOpen((x) => !x)
+
   const gradeChapterTask = () => {
     setRightOpen(true)
     const text = files[activeFile] || ''
@@ -299,6 +302,13 @@ buf.getvalue()
     setRightOpen(true)
     setAiText(`Artifact: ${a.path}\n\n${a.content.slice(0, 5000)}`)
   }
+
+  const onFileContextMenu = (e: MouseEvent<HTMLLIElement>, file: string) => {
+    e.preventDefault()
+    setContextMenu({ x: e.clientX, y: e.clientY, file })
+  }
+
+  const closeContextMenu = () => setContextMenu(null)
 
   const onCmdKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -332,7 +342,7 @@ buf.getvalue()
             {chapters.map((c) => <option key={c.id} value={c.id}>Chapter {c.id}: {c.title}</option>)}
           </select>
           <span className={`health ${runtimeHealth}`}>runtime: {runtimeHealth}</span>
-          <button onClick={gradeChapterTask}>Check My Solution</button>
+          <button onClick={toggleAICoach}>AI Coach</button>
         </div>
       </header>
 
@@ -353,8 +363,18 @@ buf.getvalue()
           <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importZip(e.target.files?.[0])} />
         </div>
 
-        <ul className="filetree">
-          {fileList.map((f) => <li key={f} className={f === activeFile ? 'active' : ''} onClick={() => setActiveFile(f)} title={f}>{f}</li>)}
+        <ul className="filetree" onClick={closeContextMenu}>
+          {fileList.map((f) => (
+            <li
+              key={f}
+              className={f === activeFile ? 'active' : ''}
+              onClick={() => setActiveFile(f)}
+              onContextMenu={(e) => onFileContextMenu(e, f)}
+              title={f}
+            >
+              {f}
+            </li>
+          ))}
         </ul>
 
         <h4 className="artifacts-title">Artifacts</h4>
@@ -396,16 +416,27 @@ buf.getvalue()
       <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`}>
         <div className="right-head" title="AI Coach panel">
           <strong>AI Coach</strong>
-          <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? 'Close' : 'Open'}</button>
+          <button onClick={toggleAICoach}>{rightOpen ? 'Close' : 'Open'}</button>
         </div>
         {rightOpen && (
           <>
+            <div className="coach-actions">
+              <button onClick={gradeChapterTask}>Check Solution</button>
+            </div>
             <pre className="coach">{aiText}</pre>
             <h4>CLI Output</h4>
             <pre className="coach">{output || 'No output yet.'}</pre>
           </>
         )}
       </aside>
+
+      {contextMenu && (
+        <div className="context-menu" style={{ left: contextMenu.x, top: contextMenu.y }}>
+          <button onClick={() => { setActiveFile(contextMenu.file); renameFile(); closeContextMenu() }}>Rename</button>
+          <button onClick={() => { setActiveFile(contextMenu.file); deleteFile(); closeContextMenu() }}>Delete</button>
+          <button onClick={() => { setActiveFile(contextMenu.file); createFile(); closeContextMenu() }}>New File</button>
+        </div>
+      )}
 
       <div className="build-stamp">build {(import.meta as any).env?.VITE_BUILD_ID || 'local'}</div>
     </div>

@@ -37,7 +37,10 @@ button{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 1
 .right-head strong{font-size:13px}
 .right.collapsed .right-head{flex-direction:column;justify-content:center;align-items:center;padding:8px 6px}
 .right.collapsed .right-head strong{font-size:11px;text-align:center;line-height:1.1}
+.coach-actions{padding:10px;border-bottom:1px solid #233046}
 .coach{padding:10px;margin:0;white-space:pre-wrap;font-size:12px;color:#d9e5ff;max-height:35vh;overflow:auto}
+.context-menu{position:fixed;z-index:30;background:#111827;border:1px solid #334155;border-radius:8px;padding:6px;display:grid;gap:6px;min-width:120px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.context-menu button{width:100%;text-align:left;background:#1f2937}
 
 .build-stamp{position:fixed;right:10px;bottom:8px;font-size:10px;color:#7f8ea3;background:#0f172a;border:1px solid #334155;border-radius:999px;padding:3px 8px;opacity:.9}
 
