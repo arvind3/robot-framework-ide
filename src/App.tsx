@@ -5,6 +5,7 @@ import './App.css'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
+type AIRoute = 'webllm-primary' | 'webllm-fallback' | 'wllama-fallback' | 'heuristic'
 
 const rfVersions = ['3.1', '3.2', '4.1', '5.0', '6.1']
 
@@ -20,20 +21,30 @@ Open Home Page
 Open App
     Log    Opening app`,
   },
-  'API Test': {
-    'tests/api.robot': `*** Settings ***
-Library    RequestsLibrary
+  'Best Practice': {
+    'tests/login.robot': `*** Settings ***
+Resource    ../resources/common.resource
 
 *** Test Cases ***
-Ping API
-    Log    Replace with API call`,
+Login Happy Path
+    Given app is open
+    When user logs in with valid credentials
+    Then dashboard is visible`,
+    'resources/common.resource': `*** Keywords ***
+Given app is open
+    Log    Open browser and navigate
+
+When user logs in with valid credentials
+    Log    Fill user/password and submit
+
+Then dashboard is visible
+    Log    Assert dashboard`,
   },
 }
 
 async function ensurePyodide() {
   const w = window as PyodideWindow
   if (w.__pyodide) return w.__pyodide
-
   if (!w.loadPyodide) {
     await new Promise<void>((resolve, reject) => {
       const script = document.createElement('script')
@@ -43,7 +54,6 @@ async function ensurePyodide() {
       document.body.appendChild(script)
     })
   }
-
   const pyodide = await w.loadPyodide?.({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.3/full/' })
   if (!pyodide) throw new Error('Pyodide unavailable')
   w.__pyodide = pyodide
@@ -54,8 +64,11 @@ function App() {
   const [files, setFiles] = useState<FileMap>(starterTemplates['Smoke Test'])
   const [activeFile, setActiveFile] = useState(Object.keys(starterTemplates['Smoke Test'])[0])
   const [rfVersion, setRfVersion] = useState('6.1')
-  const [output, setOutput] = useState('Ready. Select a file and run validation.')
+  const [output, setOutput] = useState('Welcome. Start with a template and run checks.')
   const [running, setRunning] = useState(false)
+  const [aiStatus, setAiStatus] = useState('Not initialized')
+  const [aiRoute, setAiRoute] = useState<AIRoute>('heuristic')
+  const [engine, setEngine] = useState<any>(null)
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -105,8 +118,6 @@ function App() {
       `Robot Framework v${rfVersion} check complete`,
       hasSection ? '✔ Test Cases section found' : '✖ Missing *** Test Cases *** section',
       `File: ${activeFile}`,
-      '',
-      'Next: full runtime switch implementation with RF wheel sets.',
     ].join('\n')
     setOutput(msg)
   }
@@ -122,18 +133,65 @@ function App() {
       const result = pyodide.runPython(`
 lines = robot_text.splitlines()
 has_tc = any('*** Test Cases ***' in x for x in lines)
-msg = []
-msg.append('Pyodide runtime check complete')
-msg.append('Test Cases section: ' + ('FOUND' if has_tc else 'MISSING'))
-msg.append('Line count: ' + str(len(lines)))
-'\\n'.join(msg)
+'Pyodide runtime check complete\\nTest Cases section: ' + ('FOUND' if has_tc else 'MISSING') + '\\nLine count: ' + str(len(lines))
       `)
-      setOutput(`${result}\n\nNote: full Robot execution + RF version packs is next phase.`)
+      setOutput(String(result))
     } catch (e) {
       setOutput(`Runtime error: ${(e as Error).message}`)
     } finally {
       setRunning(false)
     }
+  }
+
+  const initAI = async () => {
+    setAiStatus('Initializing...')
+    try {
+      const webllm = await import('@mlc-ai/web-llm')
+      const primary = 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC'
+      const fallback = 'Llama-3.2-1B-Instruct-q4f16_1-MLC'
+      try {
+        const e = await webllm.CreateMLCEngine(primary, {
+          initProgressCallback: (p: any) => setAiStatus(`WebLLM primary: ${Math.round((p.progress || 0) * 100)}%`),
+        })
+        setEngine(e)
+        setAiRoute('webllm-primary')
+        setAiStatus(`Ready with ${primary}`)
+        return
+      } catch {
+        const e2 = await webllm.CreateMLCEngine(fallback, {
+          initProgressCallback: (p: any) => setAiStatus(`WebLLM fallback: ${Math.round((p.progress || 0) * 100)}%`),
+        })
+        setEngine(e2)
+        setAiRoute('webllm-fallback')
+        setAiStatus(`Ready with ${fallback}`)
+        return
+      }
+    } catch {
+      setAiRoute('wllama-fallback')
+      setAiStatus('WebLLM unavailable. wllama fallback hook is reserved for GGUF integration in next patch.')
+    }
+  }
+
+  const explainWithAI = async () => {
+    const text = files[activeFile] || ''
+    if (!text) return
+    if (engine) {
+      const r = await engine.chat.completions.create({
+        messages: [
+          { role: 'system', content: 'You are a strict Robot Framework assistant. Keep output concise and practical.' },
+          { role: 'user', content: `Review this Robot Framework file and provide issues + improvements:\n\n${text}` },
+        ],
+      })
+      setOutput(r.choices?.[0]?.message?.content || 'No response')
+      return
+    }
+
+    const hints = []
+    if (!text.includes('*** Test Cases ***')) hints.push('Add *** Test Cases *** section.')
+    if (!text.includes('*** Settings ***')) hints.push('Add *** Settings *** for clearer dependencies.')
+    if (text.includes('Log    ')) hints.push('Replace placeholder Log steps with business-intent keywords.')
+    if (!hints.length) hints.push('Structure looks good. Next: add assertions and reusable keywords.')
+    setOutput(`[${aiRoute}]\n` + hints.map((h) => `- ${h}`).join('\n'))
   }
 
   const exportProject = async () => {
@@ -168,11 +226,10 @@ msg.append('Line count: ' + str(len(lines)))
     <div className="layout">
       <aside className="sidebar">
         <h2>Robot Framework IDE</h2>
-        <label>Version</label>
+        <p className="subtle">Beautiful, browser-native, product-grade authoring for Robot Framework.</p>
+        <label>Robot Version</label>
         <select value={rfVersion} onChange={(e) => setRfVersion(e.target.value)}>
-          {rfVersions.map((v) => (
-            <option key={v} value={v}>v{v}</option>
-          ))}
+          {rfVersions.map((v) => <option key={v} value={v}>v{v}</option>)}
         </select>
 
         <div className="actions">
@@ -184,48 +241,43 @@ msg.append('Line count: ' + str(len(lines)))
         <div className="templateButtons" style={{ marginTop: 10 }}>
           <button onClick={exportProject}>Export ZIP</button>
           <button onClick={() => importRef.current?.click()}>Import ZIP</button>
-          <input
-            ref={importRef}
-            type="file"
-            accept=".zip"
-            style={{ display: 'none' }}
-            onChange={(e) => importProject(e.target.files?.[0])}
-          />
+          <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importProject(e.target.files?.[0])} />
         </div>
 
         <h3>Files</h3>
         <ul>
           {fileList.map((file) => (
-            <li key={file} className={file === activeFile ? 'active' : ''} onClick={() => setActiveFile(file)}>
-              {file}
-            </li>
+            <li key={file} className={file === activeFile ? 'active' : ''} onClick={() => setActiveFile(file)}>{file}</li>
           ))}
         </ul>
 
         <h3>Starter Templates</h3>
         <div className="templateButtons">
-          {Object.keys(starterTemplates).map((name) => (
-            <button key={name} onClick={() => loadTemplate(name)}>{name}</button>
-          ))}
+          {Object.keys(starterTemplates).map((name) => <button key={name} onClick={() => loadTemplate(name)}>{name}</button>)}
         </div>
       </aside>
 
       <main className="main">
+        <div className="hero">
+          <h1>Ship Robot tests faster, with confidence.</h1>
+          <p>No manual required: pick a template, edit in the center pane, run checks, and get AI guidance.</p>
+        </div>
         <div className="toolbar">
           <span>{activeFile || 'No file selected'}</span>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <button onClick={runValidation} disabled={!activeFile}>Run Check</button>
             <button onClick={runPyodideCheck} disabled={!activeFile || running}>{running ? 'Running...' : 'Run Runtime Check'}</button>
+            <button onClick={initAI}>Init AI</button>
+            <button onClick={explainWithAI} disabled={!activeFile}>Explain with AI</button>
           </div>
         </div>
         <Editor
-          height="58vh"
-          defaultLanguage="python"
+          height="52vh"
           language="python"
           value={activeFile ? files[activeFile] : ''}
           onChange={(v) => activeFile && setFiles((prev) => ({ ...prev, [activeFile]: v ?? '' }))}
           theme="vs-dark"
-          options={{ minimap: { enabled: false }, fontSize: 14 }}
+          options={{ minimap: { enabled: false }, fontSize: 14, smoothScrolling: true }}
         />
 
         <section className="panels">
@@ -234,10 +286,11 @@ msg.append('Line count: ' + str(len(lines)))
             <pre>{output}</pre>
           </div>
           <div>
-            <h3>AI Assistant (planned)</h3>
-            <p>
-              WebLLM (small model) + WASM fallback (wllama) roadmap: explain failures, suggest keywords,
-              and generate test skeletons directly from selected files.
+            <h3>AI Route</h3>
+            <p><strong>Current route:</strong> {aiRoute}</p>
+            <p><strong>Status:</strong> {aiStatus}</p>
+            <p className="subtle">
+              Route order: WebLLM primary (Qwen2.5 1.5B) → WebLLM fallback (Llama 3.2 1B) → wllama fallback → heuristic.
             </p>
           </div>
         </section>
