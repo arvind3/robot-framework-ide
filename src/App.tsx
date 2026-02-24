@@ -210,18 +210,18 @@ buf.getvalue()
   }
 
   return (
-    <div className="vscode">
+    <div className={`vscode ${rightOpen ? 'right-open' : 'right-closed'}`}>
       <header className="topbar">
-        <div>
+        <div className="brand">
           <strong>Robot Framework IDE</strong>
-          <span className="muted"> · Browser-first learning lab</span>
+          <span className="muted">Browser-first learning lab</span>
         </div>
         <div className="top-actions">
           <label>Chapter</label>
           <select value={selectedChapterId} onChange={(e) => loadChapter(e.target.value)}>
             {chapters.map((c) => <option key={c.id} value={c.id}>Chapter {c.id}: {c.title}</option>)}
           </select>
-          <button onClick={gradeChapterTask}>Grade Chapter Task</button>
+          <button onClick={gradeChapterTask}>Check My Solution</button>
         </div>
       </header>
 
@@ -229,10 +229,10 @@ buf.getvalue()
         <div className="explorer-head">
           <strong>Explorer</strong>
           <div className="icon-actions">
-            <button title="New File" onClick={createFile}>＋F</button>
-            <button title="New Folder" onClick={createFolder}>＋D</button>
-            <button title="Rename" onClick={renameFile}>✎</button>
-            <button title="Delete" onClick={deleteFile}>🗑</button>
+            <button title="New File" onClick={createFile}>+File</button>
+            <button title="New Folder" onClick={createFolder}>+Folder</button>
+            <button title="Rename" onClick={renameFile}>Rename</button>
+            <button title="Delete" onClick={deleteFile}>Delete</button>
           </div>
         </div>
         <div className="icon-actions block">
@@ -261,7 +261,7 @@ buf.getvalue()
           </div>
           <div className="terminal-input">
             <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="robot tests/01_foundation.robot" onKeyDown={(e) => e.key === 'Enter' && runCommand()} />
-            <button onClick={runCommand}>Run CLI</button>
+            <button onClick={runCommand}>Execute CLI</button>
           </div>
         </div>
       </main>
