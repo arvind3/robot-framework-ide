@@ -28,8 +28,9 @@ button{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 1
 .terminal{border-top:1px solid #233046;background:#0a1220;height:30vh;display:flex;flex-direction:column}
 .error-banner{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 10px;background:#3f1a1a;color:#fecaca;border-bottom:1px solid #7f1d1d;font-size:12px}
 .terminal-log{flex:1;overflow:auto;padding:10px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
-.terminal-input{display:flex;gap:8px;padding:8px;border-top:1px solid #233046}
-.terminal-input input{flex:1;background:#111827;color:#e5eefc;border:1px solid #334155;border-radius:8px;padding:8px}
+.terminal-input{display:flex;gap:8px;padding:8px;border-top:1px solid #233046;align-items:center}
+.terminal-input::before{content:'$';color:#86efac;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.terminal-input input{flex:1;background:#111827;color:#e5eefc;border:1px solid #334155;border-radius:8px;padding:8px;font-family:ui-monospace,Consolas,monospace}
 
 .right{border-left:1px solid #233046;background:#0f172a;overflow:hidden;min-width:0}
 .right-head{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #233046;gap:8px}

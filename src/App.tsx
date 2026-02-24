@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import Editor from '@monaco-editor/react'
 import JSZip from 'jszip'
 import './App.css'
@@ -98,6 +98,23 @@ __robot_ready__ = True
   return pyodide
 }
 
+const configureRobotMonaco = (monaco: any) => {
+  if (!monaco.languages.getLanguages().some((l: any) => l.id === 'robotframework')) {
+    monaco.languages.register({ id: 'robotframework' })
+    monaco.languages.setMonarchTokensProvider('robotframework', {
+      tokenizer: {
+        root: [
+          [/^\*\*\*\s*(Settings|Variables|Test Cases|Keywords|Comments)\s*\*\*\*/, 'keyword.section'],
+          [/\$\{[^\}]+\}/, 'variable'],
+          [/\b(Log|Should Be Equal|Should Contain|FOR|END|IF|ELSE|Suite Setup|Suite Teardown|Resource|Variables|Library)\b/, 'keyword'],
+          [/\[[^\]]+\]/, 'type'],
+          [/^\s{2,}.+$/, 'string'],
+        ],
+      },
+    })
+  }
+}
+
 function App() {
   const [selectedChapterId, setSelectedChapterId] = useState(chapters[0].id)
   const selectedChapter = useMemo(() => chapters.find((c) => c.id === selectedChapterId)!, [selectedChapterId])
@@ -106,6 +123,8 @@ function App() {
   const [terminal, setTerminal] = useState<string[]>(['Robot IDE ready. Type a command below.'])
   const [cmd, setCmd] = useState('robot tests/01_foundation.robot')
   const [lastCmd, setLastCmd] = useState('robot tests/01_foundation.robot')
+  const [cmdHistory, setCmdHistory] = useState<string[]>([])
+  const [historyIdx, setHistoryIdx] = useState(-1)
   const [rightOpen, setRightOpen] = useState(false)
   const [aiText, setAiText] = useState('Click "Check My Solution" to open AI Coach.')
   const [output, setOutput] = useState('')
@@ -226,6 +245,8 @@ items
     const command = cmd.trim()
     if (!command) return
     setLastCmd(command)
+    setCmdHistory((h) => [...h, command])
+    setHistoryIdx(-1)
     setFetchError('')
     setTerminal((p) => [...p, `$ ${command}`])
 
@@ -279,6 +300,25 @@ buf.getvalue()
     setAiText(`Artifact: ${a.path}\n\n${a.content.slice(0, 5000)}`)
   }
 
+  const onCmdKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      runCommand()
+      return
+    }
+    if (e.key === 'ArrowUp' && cmdHistory.length) {
+      e.preventDefault()
+      const nextIdx = historyIdx < 0 ? cmdHistory.length - 1 : Math.max(0, historyIdx - 1)
+      setHistoryIdx(nextIdx)
+      setCmd(cmdHistory[nextIdx])
+    }
+    if (e.key === 'ArrowDown' && cmdHistory.length) {
+      e.preventDefault()
+      const nextIdx = historyIdx >= cmdHistory.length - 1 ? -1 : historyIdx + 1
+      setHistoryIdx(nextIdx)
+      setCmd(nextIdx === -1 ? '' : cmdHistory[nextIdx])
+    }
+  }
+
   return (
     <div className={`vscode ${rightOpen ? 'right-open' : 'right-closed'}`}>
       <header className="topbar">
@@ -328,7 +368,8 @@ buf.getvalue()
         <div className="editor-head">{activeFile || 'No file selected'}</div>
         <Editor
           height="50vh"
-          language={activeFile.endsWith('.robot') || activeFile.endsWith('.resource') ? 'python' : 'plaintext'}
+          beforeMount={configureRobotMonaco}
+          language={activeFile.endsWith('.robot') || activeFile.endsWith('.resource') ? 'robotframework' : activeFile.endsWith('.py') ? 'python' : 'plaintext'}
           value={activeFile ? files[activeFile] : ''}
           onChange={(v) => activeFile && setFiles((p) => ({ ...p, [activeFile]: v ?? '' }))}
           theme="vs-dark"
@@ -346,7 +387,7 @@ buf.getvalue()
             {terminal.slice(-160).map((line, i) => <div key={i}>{line}</div>)}
           </div>
           <div className="terminal-input">
-            <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="robot tests/01_foundation.robot" onKeyDown={(e) => e.key === 'Enter' && runCommand()} />
+            <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="robot tests/01_foundation.robot" onKeyDown={onCmdKeyDown} />
             <button onClick={runCommand}>Execute CLI</button>
           </div>
         </div>
