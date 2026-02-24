@@ -75,12 +75,25 @@ async function main() {
     const missing = tc.mustInclude.filter((k) => !n.includes(normalize(k)))
     const forbidden = tc.mustNotInclude.filter((k) => n.includes(normalize(k)))
     const pass = missing.length === 0 && forbidden.length === 0
+
+    const testSteps = [
+      `Load chapter context: ${tc.ctx.chapterTitle} (${tc.chapter})`,
+      `Set active file: ${tc.ctx.activeFile}`,
+      `Submit prompt to coach: "${tc.prompt}"`,
+      'Validate response content rules (must include / must not include)',
+    ]
+
+    const expectedResult = `Response should include: ${tc.mustInclude.join(', ')}; and should NOT include: ${tc.mustNotInclude.join(', ')}`
+
     return {
       ...tc,
       actual,
       pass,
       missing,
       forbidden,
+      testSteps,
+      expectedResult,
+      actualResult: actual,
     }
   })
 
@@ -129,22 +142,20 @@ async function main() {
     md += `| ${i + 1} | ${r.id} | ${r.category} | ${r.severity} | ${r.prompt} | ${r.pass ? 'PASS' : 'FAIL'} |\n`
   })
 
-  md += '\n## Failed Details (Expected vs Actual)\n\n'
-  const failures = results.filter((r) => !r.pass)
-  if (!failures.length) {
-    md += 'All test cases passed.\n'
-  } else {
-    failures.forEach((r, i) => {
-      md += `### ${i + 1}. ${r.id}\n`
-      md += `- Category: ${r.category} (${r.severity})\n`
-      md += `- Prompt: ${r.prompt}\n`
-      md += `- Expected include: ${r.mustInclude.join(', ')}\n`
-      md += `- Expected exclude: ${r.mustNotInclude.join(', ')}\n`
-      if (r.missing.length) md += `- Missing: ${r.missing.join(', ')}\n`
-      if (r.forbidden.length) md += `- Forbidden present: ${r.forbidden.join(', ')}\n`
-      md += `- Actual: ${String(r.actual).replace(/\n/g, ' ')}\n\n`
+  md += '\n## Detailed Test Steps, Expected Result, Actual LLM Result\n\n'
+  results.forEach((r, i) => {
+    md += `### ${i + 1}. ${r.id} (${r.pass ? 'PASS' : 'FAIL'})\n`
+    md += `- Category: ${r.category} (${r.severity})\n`
+    md += `- Prompt: ${r.prompt}\n`
+    md += '- Test Steps:\n'
+    r.testSteps.forEach((s, idx) => {
+      md += `  ${idx + 1}. ${s}\n`
     })
-  }
+    md += `- Expected Result: ${r.expectedResult}\n`
+    if (r.missing.length) md += `- Missing: ${r.missing.join(', ')}\n`
+    if (r.forbidden.length) md += `- Forbidden present: ${r.forbidden.join(', ')}\n`
+    md += `- Actual LLM Result: ${String(r.actualResult).replace(/\n/g, ' ')}\n\n`
+  })
 
   await fs.writeFile(path.join(reportDir, 'latest.md'), md, 'utf8')
 

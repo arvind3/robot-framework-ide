@@ -44,6 +44,7 @@ Critical anti-pattern blocked by default:
 6. Emit machine + human reports:
    - `eval/ai-coach/reports/latest.json`
    - `eval/ai-coach/reports/latest.md`
+   - Each case includes: **test steps**, **expected result**, and **actual LLM result**
 7. Fail process if pass-rate threshold not met
 
 ## Execution

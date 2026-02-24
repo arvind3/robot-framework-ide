@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-02-24T17:23:31.947Z",
+    "generatedAt": "2026-02-24T17:24:55.549Z",
     "totalCases": 120,
     "passed": 120,
     "failed": 0,
@@ -100,7 +100,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-01-introduction-IMPORT_ZIP",
@@ -131,7 +139,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-01-introduction-RUN_COMMAND",
@@ -161,7 +177,15 @@
       "actual": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-01-introduction-REPORT_FILES",
@@ -192,7 +216,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-01-introduction-DEBUG_FAILURE",
@@ -223,7 +255,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=yes, Test Cases=yes, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=yes, Test Cases=yes, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-01-introduction-FETCH_FAILURE",
@@ -254,7 +294,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=yes, Test Cases=yes, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=yes, Test Cases=yes, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-01-introduction-QUALITY_IMPROVEMENT",
@@ -285,7 +333,15 @@
       "actual": "Chapter focus: Minimal Robot suite and shared resource file. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=ok, Test Cases=ok, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Minimal Robot suite and shared resource file. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=ok, Test Cases=ok, Keywords=missing"
     },
     {
       "id": "chapter-01-introduction-ARTIFACT_MISSING",
@@ -316,7 +372,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-01-introduction-BEGINNER_FIRST_STEPS",
@@ -347,7 +411,15 @@
       "actual": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-01-introduction-NEXT_ACTION",
@@ -377,7 +449,15 @@
       "actual": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-01-introduction-GENERIC_HELP",
@@ -408,7 +488,15 @@
       "actual": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-01-introduction-VARIABLES_EXPLANATION",
@@ -439,7 +527,15 @@
       "actual": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Introduction (chapter-01-introduction)",
+        "Set active file: main.robot",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 01: Introduction. Objective: Minimal Robot suite and shared resource file.. Active file: main.robot. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-02-installation-concepts-EXPLAIN_PROGRAM",
@@ -470,7 +566,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-02-installation-concepts-IMPORT_ZIP",
@@ -501,7 +605,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-02-installation-concepts-RUN_COMMAND",
@@ -531,7 +643,15 @@
       "actual": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-02-installation-concepts-REPORT_FILES",
@@ -562,7 +682,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-02-installation-concepts-DEBUG_FAILURE",
@@ -593,7 +721,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-02-installation-concepts-FETCH_FAILURE",
@@ -624,7 +760,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-02-installation-concepts-QUALITY_IMPROVEMENT",
@@ -655,7 +799,15 @@
       "actual": "Chapter focus: Dependency and environment awareness in a chapter bundle. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Dependency and environment awareness in a chapter bundle. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-02-installation-concepts-ARTIFACT_MISSING",
@@ -686,7 +838,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-02-installation-concepts-BEGINNER_FIRST_STEPS",
@@ -717,7 +877,15 @@
       "actual": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-02-installation-concepts-NEXT_ACTION",
@@ -747,7 +915,15 @@
       "actual": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-02-installation-concepts-GENERIC_HELP",
@@ -778,7 +954,15 @@
       "actual": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-02-installation-concepts-VARIABLES_EXPLANATION",
@@ -809,7 +993,15 @@
       "actual": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Installation Concepts (chapter-02-installation-concepts)",
+        "Set active file: libraries/install_notes.py",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 02: Installation Concepts. Objective: Dependency and environment awareness in a chapter bundle.. Active file: libraries/install_notes.py. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-03-robot-framework-basics-EXPLAIN_PROGRAM",
@@ -840,7 +1032,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-03-robot-framework-basics-IMPORT_ZIP",
@@ -871,7 +1071,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-03-robot-framework-basics-RUN_COMMAND",
@@ -901,7 +1109,15 @@
       "actual": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-03-robot-framework-basics-REPORT_FILES",
@@ -932,7 +1148,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-03-robot-framework-basics-DEBUG_FAILURE",
@@ -963,7 +1187,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suite.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suite.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-03-robot-framework-basics-FETCH_FAILURE",
@@ -994,7 +1226,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suite.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suite.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-03-robot-framework-basics-QUALITY_IMPROVEMENT",
@@ -1025,7 +1265,15 @@
       "actual": "Chapter focus: Core suite, keywords, and data structure. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Core suite, keywords, and data structure. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-03-robot-framework-basics-ARTIFACT_MISSING",
@@ -1056,7 +1304,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-03-robot-framework-basics-BEGINNER_FIRST_STEPS",
@@ -1087,7 +1343,15 @@
       "actual": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-03-robot-framework-basics-NEXT_ACTION",
@@ -1117,7 +1381,15 @@
       "actual": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-03-robot-framework-basics-GENERIC_HELP",
@@ -1148,7 +1420,15 @@
       "actual": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-03-robot-framework-basics-VARIABLES_EXPLANATION",
@@ -1179,7 +1459,15 @@
       "actual": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Robot Framework Basics (chapter-03-robot-framework-basics)",
+        "Set active file: data/test_data.json",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 03: Robot Framework Basics. Objective: Core suite, keywords, and data structure.. Active file: data/test_data.json. Next action: run robot suite.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-04-multi-file-architecture-EXPLAIN_PROGRAM",
@@ -1210,7 +1498,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-04-multi-file-architecture-IMPORT_ZIP",
@@ -1241,7 +1537,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-04-multi-file-architecture-RUN_COMMAND",
@@ -1271,7 +1575,15 @@
       "actual": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-04-multi-file-architecture-REPORT_FILES",
@@ -1302,7 +1614,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-04-multi-file-architecture-DEBUG_FAILURE",
@@ -1333,7 +1653,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-04-multi-file-architecture-FETCH_FAILURE",
@@ -1364,7 +1692,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-04-multi-file-architecture-QUALITY_IMPROVEMENT",
@@ -1395,7 +1731,15 @@
       "actual": "Chapter focus: Nested folders with resources and Python helpers. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Nested folders with resources and Python helpers. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-04-multi-file-architecture-ARTIFACT_MISSING",
@@ -1426,7 +1770,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-04-multi-file-architecture-BEGINNER_FIRST_STEPS",
@@ -1457,7 +1809,15 @@
       "actual": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-04-multi-file-architecture-NEXT_ACTION",
@@ -1487,7 +1847,15 @@
       "actual": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-04-multi-file-architecture-GENERIC_HELP",
@@ -1518,7 +1886,15 @@
       "actual": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-04-multi-file-architecture-VARIABLES_EXPLANATION",
@@ -1549,7 +1925,15 @@
       "actual": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Multi-file Architecture (chapter-04-multi-file-architecture)",
+        "Set active file: helpers/constants.py",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 04: Multi-file Architecture. Objective: Nested folders with resources and Python helpers.. Active file: helpers/constants.py. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-05-advanced-keywords-EXPLAIN_PROGRAM",
@@ -1580,7 +1964,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-05-advanced-keywords-IMPORT_ZIP",
@@ -1611,7 +2003,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-05-advanced-keywords-RUN_COMMAND",
@@ -1641,7 +2041,15 @@
       "actual": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-05-advanced-keywords-REPORT_FILES",
@@ -1672,7 +2080,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-05-advanced-keywords-DEBUG_FAILURE",
@@ -1703,7 +2119,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=yes 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=yes 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-05-advanced-keywords-FETCH_FAILURE",
@@ -1734,7 +2158,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=yes 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=yes 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-05-advanced-keywords-QUALITY_IMPROVEMENT",
@@ -1765,7 +2197,15 @@
       "actual": "Chapter focus: Composable keyword architecture with explicit assertions. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=ok",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Composable keyword architecture with explicit assertions. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=ok"
     },
     {
       "id": "chapter-05-advanced-keywords-ARTIFACT_MISSING",
@@ -1796,7 +2236,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-05-advanced-keywords-BEGINNER_FIRST_STEPS",
@@ -1827,7 +2275,15 @@
       "actual": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-05-advanced-keywords-NEXT_ACTION",
@@ -1857,7 +2313,15 @@
       "actual": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-05-advanced-keywords-GENERIC_HELP",
@@ -1888,7 +2352,15 @@
       "actual": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-05-advanced-keywords-VARIABLES_EXPLANATION",
@@ -1919,7 +2391,15 @@
       "actual": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Advanced Keywords (chapter-05-advanced-keywords)",
+        "Set active file: keywords/advanced.resource",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 05: Advanced Keywords. Objective: Composable keyword architecture with explicit assertions.. Active file: keywords/advanced.resource. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-06-python-integration-EXPLAIN_PROGRAM",
@@ -1950,7 +2430,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-06-python-integration-IMPORT_ZIP",
@@ -1981,7 +2469,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-06-python-integration-RUN_COMMAND",
@@ -2011,7 +2507,15 @@
       "actual": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-06-python-integration-REPORT_FILES",
@@ -2042,7 +2546,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-06-python-integration-DEBUG_FAILURE",
@@ -2073,7 +2585,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/python_integration.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/python_integration.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-06-python-integration-FETCH_FAILURE",
@@ -2104,7 +2624,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/python_integration.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/python_integration.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-06-python-integration-QUALITY_IMPROVEMENT",
@@ -2135,7 +2663,15 @@
       "actual": "Chapter focus: Robot suites that call Python libraries. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Robot suites that call Python libraries. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-06-python-integration-ARTIFACT_MISSING",
@@ -2166,7 +2702,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-06-python-integration-BEGINNER_FIRST_STEPS",
@@ -2197,7 +2741,15 @@
       "actual": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-06-python-integration-NEXT_ACTION",
@@ -2227,7 +2779,15 @@
       "actual": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-06-python-integration-GENERIC_HELP",
@@ -2258,7 +2818,15 @@
       "actual": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-06-python-integration-VARIABLES_EXPLANATION",
@@ -2289,7 +2857,15 @@
       "actual": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Python Integration (chapter-06-python-integration)",
+        "Set active file: libraries/math_lib.py",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 06: Python Integration. Objective: Robot suites that call Python libraries.. Active file: libraries/math_lib.py. Next action: run robot suites/python_integration.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-07-best-practices-EXPLAIN_PROGRAM",
@@ -2320,7 +2896,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-07-best-practices-IMPORT_ZIP",
@@ -2351,7 +2935,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-07-best-practices-RUN_COMMAND",
@@ -2381,7 +2973,15 @@
       "actual": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-07-best-practices-REPORT_FILES",
@@ -2412,7 +3012,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-07-best-practices-DEBUG_FAILURE",
@@ -2443,7 +3051,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-07-best-practices-FETCH_FAILURE",
@@ -2474,7 +3090,15 @@
       "actual": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-07-best-practices-QUALITY_IMPROVEMENT",
@@ -2505,7 +3129,15 @@
       "actual": "Chapter focus: Stable data and reusable keywords. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Stable data and reusable keywords. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-07-best-practices-ARTIFACT_MISSING",
@@ -2536,7 +3168,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-07-best-practices-BEGINNER_FIRST_STEPS",
@@ -2567,7 +3207,15 @@
       "actual": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-07-best-practices-NEXT_ACTION",
@@ -2597,7 +3245,15 @@
       "actual": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-07-best-practices-GENERIC_HELP",
@@ -2628,7 +3284,15 @@
       "actual": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-07-best-practices-VARIABLES_EXPLANATION",
@@ -2659,7 +3323,15 @@
       "actual": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Best Practices (chapter-07-best-practices)",
+        "Set active file: data/orders.json",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 07: Best Practices. Objective: Stable data and reusable keywords.. Active file: data/orders.json. Next action: run robot main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-08-enterprise-patterns-EXPLAIN_PROGRAM",
@@ -2690,7 +3362,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-08-enterprise-patterns-IMPORT_ZIP",
@@ -2721,7 +3401,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-08-enterprise-patterns-RUN_COMMAND",
@@ -2751,7 +3439,15 @@
       "actual": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-08-enterprise-patterns-REPORT_FILES",
@@ -2782,7 +3478,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-08-enterprise-patterns-DEBUG_FAILURE",
@@ -2813,7 +3517,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/enterprise.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/enterprise.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-08-enterprise-patterns-FETCH_FAILURE",
@@ -2844,7 +3556,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/enterprise.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/enterprise.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-08-enterprise-patterns-QUALITY_IMPROVEMENT",
@@ -2875,7 +3595,15 @@
       "actual": "Chapter focus: Shared resources and execution profiles. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Shared resources and execution profiles. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-08-enterprise-patterns-ARTIFACT_MISSING",
@@ -2906,7 +3634,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-08-enterprise-patterns-BEGINNER_FIRST_STEPS",
@@ -2937,7 +3673,15 @@
       "actual": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-08-enterprise-patterns-NEXT_ACTION",
@@ -2967,7 +3711,15 @@
       "actual": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-08-enterprise-patterns-GENERIC_HELP",
@@ -2998,7 +3750,15 @@
       "actual": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-08-enterprise-patterns-VARIABLES_EXPLANATION",
@@ -3029,7 +3789,15 @@
       "actual": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Enterprise Patterns (chapter-08-enterprise-patterns)",
+        "Set active file: configs/env.yaml",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 08: Enterprise Patterns. Objective: Shared resources and execution profiles.. Active file: configs/env.yaml. Next action: run robot suites/enterprise.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-09-real-world-case-study-EXPLAIN_PROGRAM",
@@ -3060,7 +3828,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-09-real-world-case-study-IMPORT_ZIP",
@@ -3091,7 +3867,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-09-real-world-case-study-RUN_COMMAND",
@@ -3121,7 +3905,15 @@
       "actual": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-09-real-world-case-study-REPORT_FILES",
@@ -3152,7 +3944,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-09-real-world-case-study-DEBUG_FAILURE",
@@ -3183,7 +3983,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/case_study.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/case_study.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-09-real-world-case-study-FETCH_FAILURE",
@@ -3214,7 +4022,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/case_study.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/case_study.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-09-real-world-case-study-QUALITY_IMPROVEMENT",
@@ -3245,7 +4061,15 @@
       "actual": "Chapter focus: End-to-end scenario with fixtures and helper libraries. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: End-to-end scenario with fixtures and helper libraries. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-09-real-world-case-study-ARTIFACT_MISSING",
@@ -3276,7 +4100,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-09-real-world-case-study-BEGINNER_FIRST_STEPS",
@@ -3307,7 +4139,15 @@
       "actual": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-09-real-world-case-study-NEXT_ACTION",
@@ -3337,7 +4177,15 @@
       "actual": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-09-real-world-case-study-GENERIC_HELP",
@@ -3368,7 +4216,15 @@
       "actual": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-09-real-world-case-study-VARIABLES_EXPLANATION",
@@ -3399,7 +4255,15 @@
       "actual": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Real-world Case Study (chapter-09-real-world-case-study)",
+        "Set active file: fixtures/case_data.json",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 09: Real-world Case Study. Objective: End-to-end scenario with fixtures and helper libraries.. Active file: fixtures/case_data.json. Next action: run robot suites/case_study.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-10-final-capstone-project-EXPLAIN_PROGRAM",
@@ -3430,7 +4294,15 @@
       "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"explain this program to me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
+      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-10-final-capstone-project-IMPORT_ZIP",
@@ -3461,7 +4333,15 @@
       "actual": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"how to import zip files?\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Import expects a ZIP, tests/*.robot; and should NOT include: Context:",
+      "actualResult": "Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource). On import, current file tree is replaced by ZIP contents. Use Help → Download sample import zip for a known-good structure."
     },
     {
       "id": "chapter-10-final-capstone-project-RUN_COMMAND",
@@ -3491,7 +4371,15 @@
       "actual": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"which command should i run now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: run; and should NOT include: Context:",
+      "actualResult": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-10-final-capstone-project-REPORT_FILES",
@@ -3522,7 +4410,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"how do i generate report.html and log.html\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: --output artifacts/output.xml, report.html; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-10-final-capstone-project-DEBUG_FAILURE",
@@ -3553,7 +4449,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"tests failed, help debug\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Debug checklist, Re-run:; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-10-final-capstone-project-FETCH_FAILURE",
@@ -3584,7 +4488,15 @@
       "actual": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"fetch failed error, what now\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: retry runtime bootstrap, Debug checklist; and should NOT include: Context:",
+      "actualResult": "Debug checklist: 1) Re-run: robot suites/main.robot 2) Structure check: Settings=no, Test Cases=no, Keywords=no 3) Validate file path passed to robot command. 4) If fetch/network appears, retry runtime bootstrap and verify connectivity. Terminal tail: Robot IDE ready | Run complete"
     },
     {
       "id": "chapter-10-final-capstone-project-QUALITY_IMPROVEMENT",
@@ -3615,7 +4527,15 @@
       "actual": "Chapter focus: Production-style nested Robot Framework example with 20+ files. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"how can i improve quality of this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Quality upgrades, Current structure; and should NOT include: Context:",
+      "actualResult": "Chapter focus: Production-style nested Robot Framework example with 20+ files. Quality upgrades: - clear test names by behavior - reusable keywords in resource files - avoid duplicate steps Current structure: Settings=missing, Test Cases=missing, Keywords=missing"
     },
     {
       "id": "chapter-10-final-capstone-project-ARTIFACT_MISSING",
@@ -3646,7 +4566,15 @@
       "actual": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"artifact not visible in left panel\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: artifacts, left panel; and should NOT include: Context:",
+      "actualResult": "Use explicit artifact flags: `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot` No artifacts listed yet. Then click an artifact in left panel to preview."
     },
     {
       "id": "chapter-10-final-capstone-project-BEGINNER_FIRST_STEPS",
@@ -3677,7 +4605,15 @@
       "actual": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"i am new what are first 3 steps\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-10-final-capstone-project-NEXT_ACTION",
@@ -3707,7 +4643,15 @@
       "actual": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"what should i do next\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Next action; and should NOT include: Context:",
+      "actualResult": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-10-final-capstone-project-GENERIC_HELP",
@@ -3738,7 +4682,15 @@
       "actual": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"help me\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     },
     {
       "id": "chapter-10-final-capstone-project-VARIABLES_EXPLANATION",
@@ -3769,7 +4721,15 @@
       "actual": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps.",
       "pass": true,
       "missing": [],
-      "forbidden": []
+      "forbidden": [],
+      "testSteps": [
+        "Load chapter context: Final Capstone Project (chapter-10-final-capstone-project)",
+        "Set active file: configs/execution.yaml",
+        "Submit prompt to coach: \"how do variables work in this chapter\"",
+        "Validate response content rules (must include / must not include)"
+      ],
+      "expectedResult": "Response should include: Chapter, Objective; and should NOT include: Context:",
+      "actualResult": "Chapter 10: Final Capstone Project. Objective: Production-style nested Robot Framework example with 20+ files.. Active file: configs/execution.yaml. Next action: run robot suites/main.robot and inspect terminal + artifacts. Ask specific topics (import, debug, reports, quality) for targeted steps."
     }
   ]
 }
