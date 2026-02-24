@@ -136,10 +136,12 @@ async function main() {
     md += `| ${cat} | ${v.total} | ${v.passed} | ${v.failed} | ${v.passRate}% |\n`
   }
 
-  md += '\n## Case Results\n\n'
-  md += '| # | Case ID | Category | Severity | Prompt | Status |\n|---|---|---|---|---|---|\n'
+  md += '\n## Case Results (with Expected and Actual)\n\n'
+  md += '| # | Case ID | Category | Severity | Prompt | Expected Result | Actual LLM Result | Status |\n|---|---|---|---|---|---|---|---|\n'
   results.forEach((r, i) => {
-    md += `| ${i + 1} | ${r.id} | ${r.category} | ${r.severity} | ${r.prompt} | ${r.pass ? 'PASS' : 'FAIL'} |\n`
+    const expectedInline = r.expectedResult.replace(/\|/g, '/').replace(/\n/g, ' ')
+    const actualInline = String(r.actualResult).replace(/\|/g, '/').replace(/\n/g, ' ').slice(0, 220)
+    md += `| ${i + 1} | ${r.id} | ${r.category} | ${r.severity} | ${r.prompt} | ${expectedInline} | ${actualInline}${String(r.actualResult).length > 220 ? '…' : ''} | ${r.pass ? 'PASS' : 'FAIL'} |\n`
   })
 
   md += '\n## Detailed Test Steps, Expected Result, Actual LLM Result\n\n'

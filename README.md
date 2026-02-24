@@ -17,7 +17,7 @@ Live app: https://arvind3.github.io/robot-framework-ide/
 
 ---
 
-## Quality by Design: AI Coach Eval Strategy (Killer Feature)
+## Quality by Design: AI Coach Eval Strategy
 
 This project uses **evaluation-first quality gates** for AI responses.
 
