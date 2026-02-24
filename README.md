@@ -1,16 +1,64 @@
 # Robot Framework IDE (Browser-first)
 
-In-browser Robot Framework IDE prototype built for GitHub Pages deployment.
+In-browser Robot Framework IDE with chapter-driven learning, CLI execution, and an AI Coach.
 
-## Current Features (v1)
+Live app: https://arvind3.github.io/robot-framework-ide/
 
-- Multi-file project tree
-- Create / rename / delete files
-- Monaco editor-based code editing
-- Robot version selector (3.1, 3.2, 4.1, 5.0, 6.1)
-- Starter templates
+---
+
+## Core Features
+
+- Multi-file project explorer (create / rename / delete)
+- Monaco editor for `.robot`, `.resource`, `.py`, `.json`, etc.
+- Chapter-based learning content synced from the companion book
+- In-browser Robot execution flow with artifacts (`output.xml`, `log.html`, `report.html`)
 - ZIP import/export for full project handoff
-- Pyodide runtime check scaffold
+- AI Coach panel for chapter-aware guidance
+
+---
+
+## Quality by Design: AI Coach Eval Strategy (Killer Feature)
+
+This project uses **evaluation-first quality gates** for AI responses.
+
+### What is covered
+
+The eval suite validates:
+- UI-flow prompts (import/export/artifacts)
+- Core content explanations
+- CLI command guidance
+- Debug/failure guidance
+- Variables/structure guidance
+- Beginner prompts
+- Fallback prompts
+
+### Test volume
+
+- `10 chapters × 12 prompt archetypes = 120 critical test cases`
+- Can be expanded further by adding archetypes or chapter contexts
+
+### Pass criteria
+
+A case passes only when:
+1. All required phrases are present (`mustInclude`)
+2. Forbidden leakage is absent (`mustNotInclude`), especially internal context dumps
+
+### Eval architecture
+
+1. Prompt archetypes are defined in: `eval/ai-coach/prompt-archetypes.json`
+2. Chapter contexts are sourced from: `src/bookChapters.ts`
+3. Evaluator generates cross-product test cases and executes: `scripts/run-ai-coach-eval.mjs`
+4. Reports are generated to:
+   - `eval/ai-coach/reports/latest.md`
+   - `eval/ai-coach/reports/latest.json`
+5. Strict gate fails build if pass rate is below threshold
+
+### Always-latest report URLs
+
+- Markdown report: https://github.com/arvind3/robot-framework-ide/blob/main/eval/ai-coach/reports/latest.md
+- JSON report: https://github.com/arvind3/robot-framework-ide/blob/main/eval/ai-coach/reports/latest.json
+
+---
 
 ## Local Run
 
@@ -25,18 +73,33 @@ npm run dev
 npm run build
 ```
 
+## AI Coach Eval Commands
+
+```bash
+# strict quality gate (recommended for release)
+npm run eval:coach
+
+# diagnostic run (never fails CI)
+npm run eval:coach:relaxed
+```
+
+---
+
+## Eval Frequency
+
+Recommended and configured cadence:
+- On every PR to `main`
+- On every push to `main`
+- Nightly scheduled run for drift detection
+
+This ensures regressions are caught before release and monitored continuously.
+
+---
+
 ## Deploy (GitHub Pages)
 
 Workflow included at `.github/workflows/pages.yml`.
 
 - Push to `main`
 - Ensure GitHub Pages is enabled for GitHub Actions
-- App will publish to: `https://<user>.github.io/<repo-name>/`
-
-## Next Phase
-
-1. Full Robot Framework runtime execution via Pyodide + wheel strategy
-2. Multi-version runtime packs and fallback compatibility checks
-3. Better Robot syntax support and diagnostics
-4. WebLLM + wllama fallback for inline reasoning/help
-5. Curated best-practice examples gallery
+- App publishes to: `https://<user>.github.io/<repo-name>/`
