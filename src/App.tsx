@@ -136,6 +136,7 @@ function App() {
   const [coachChat, setCoachChat] = useState<Array<{role:'user'|'assistant'; text:string}>>([])
   const [coachTopPct, setCoachTopPct] = useState(55)
   const [isResizingCoach, setIsResizingCoach] = useState(false)
+  const [showHelp, setShowHelp] = useState(false)
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -211,6 +212,18 @@ function App() {
       setFiles(next)
       setActiveFile(Object.keys(next).sort()[0])
     }
+  }
+
+  const downloadSampleImportZip = async () => {
+    const zip = new JSZip()
+    zip.file('tests/sample.robot', `*** Settings ***\nResource    ../resources/common.resource\n\n*** Test Cases ***\nSample Import Flow\n    Open App`)
+    zip.file('resources/common.resource', `*** Keywords ***\nOpen App\n    Log    App opened`)
+    zip.file('README-run.md', `Run this sample:\nrobot tests/sample.robot\n\nOptional artifacts:\nrobot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html tests/sample.robot`)
+    const blob = await zip.generateAsync({ type: 'blob' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = 'robot-ide-import-sample.zip'
+    a.click()
   }
 
   const syncFilesToPyodide = async (pyodide: any) => {
@@ -377,6 +390,7 @@ buf.getvalue()
             {chapters.map((c) => <option key={c.id} value={c.id}>Chapter {c.id}: {c.title}</option>)}
           </select>
           <span className={`health ${runtimeHealth}`}>runtime: {runtimeHealth}</span>
+          <button onClick={() => setShowHelp(true)}>Help</button>
           <button onClick={toggleAICoach}>AI Coach</button>
         </div>
       </header>
@@ -482,6 +496,28 @@ buf.getvalue()
           <button onClick={() => { setActiveFile(contextMenu.file); renameFile(); closeContextMenu() }}>Rename</button>
           <button onClick={() => { setActiveFile(contextMenu.file); deleteFile(); closeContextMenu() }}>Delete</button>
           <button onClick={() => { setActiveFile(contextMenu.file); createFile(); closeContextMenu() }}>New File</button>
+        </div>
+      )}
+
+      {showHelp && (
+        <div className="help-overlay" onClick={() => setShowHelp(false)}>
+          <div className="help-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="help-head">
+              <h3>Robot IDE Quick Guide</h3>
+              <button onClick={() => setShowHelp(false)}>Close</button>
+            </div>
+            <ul>
+              <li><b>Chapter dropdown:</b> load a guided lesson project.</li>
+              <li><b>Explorer:</b> create/rename/delete files, import/export zip.</li>
+              <li><b>Right-click file:</b> rename/delete/new file actions.</li>
+              <li><b>Terminal:</b> run commands like <code>robot tests/01_foundation.robot</code>.</li>
+              <li><b>Artifacts:</b> generated report/log/output files appear in left panel after run.</li>
+              <li><b>AI Coach:</b> open panel, check solution, ask questions in chat.</li>
+            </ul>
+            <h4>Import format expectation</h4>
+            <p>Import a zip with project-style paths (e.g. <code>tests/*.robot</code>, <code>resources/*.resource</code>).</p>
+            <button onClick={downloadSampleImportZip}>Download sample import zip</button>
+          </div>
         </div>
       )}
 

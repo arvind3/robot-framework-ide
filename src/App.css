@@ -11,6 +11,7 @@
 .health.ok{color:#86efac;border-color:#166534}.health.degraded{color:#fca5a5;border-color:#7f1d1d}
 button{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;white-space:nowrap}
 h4{margin:8px 10px;color:#cbd5e1}
+h3{margin:0;color:#e2e8f0}
 
 .left{border-right:1px solid #233046;background:#0f172a;padding:10px;overflow:auto;min-width:0}
 .explorer-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -52,6 +53,13 @@ h4{margin:8px 10px;color:#cbd5e1}
 
 .context-menu{position:fixed;z-index:30;background:#111827;border:1px solid #334155;border-radius:8px;padding:6px;display:grid;gap:6px;min-width:120px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .context-menu button{width:100%;text-align:left;background:#1f2937}
+
+.help-overlay{position:fixed;inset:0;background:rgba(3,8,20,.65);display:flex;align-items:center;justify-content:center;z-index:40}
+.help-modal{width:min(760px,92vw);max-height:85vh;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.help-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.help-modal ul{margin:8px 0 12px 18px;display:grid;gap:6px}
+.help-modal p{color:#c9d6ea;font-size:13px}
+.help-modal code{background:#111827;border:1px solid #334155;border-radius:6px;padding:1px 5px}
 
 .build-stamp{position:fixed;right:10px;bottom:8px;font-size:10px;color:#7f8ea3;background:#0f172a;border:1px solid #334155;border-radius:999px;padding:3px 8px;opacity:.9}
 
