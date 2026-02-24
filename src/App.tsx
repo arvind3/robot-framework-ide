@@ -132,6 +132,8 @@ function App() {
   const [fetchError, setFetchError] = useState('')
   const [artifacts, setArtifacts] = useState<Artifact[]>([])
   const [contextMenu, setContextMenu] = useState<{x:number;y:number;file:string}|null>(null)
+  const [coachInput, setCoachInput] = useState('')
+  const [coachChat, setCoachChat] = useState<Array<{role:'user'|'assistant'; text:string}>>([])
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -284,6 +286,7 @@ buf.getvalue()
     } catch (e) {
       const msg = (e as Error).message
       setTerminal((p) => [...p, `Error: ${msg}`])
+      setOutput(`Command failed: ${msg}`)
       setRuntimeHealth('degraded')
       if (/fetch|network|resolve|dns/i.test(msg)) setFetchError(`Runtime fetch failed: ${msg}`)
     }
@@ -301,6 +304,21 @@ buf.getvalue()
   const openArtifact = (a: Artifact) => {
     setRightOpen(true)
     setAiText(`Artifact: ${a.path}\n\n${a.content.slice(0, 5000)}`)
+  }
+
+  const sendCoachMessage = () => {
+    const q = coachInput.trim()
+    if (!q) return
+    const activeText = files[activeFile] || ''
+    const response = [
+      `For chapter ${selectedChapter.id} (${selectedChapter.title}):`,
+      q.toLowerCase().includes('error') ? 'Check terminal logs first, then verify Settings/Test Cases sections.' : 'Start by improving keyword readability and reducing duplicated steps.',
+      activeText.includes('*** Test Cases ***') ? 'Your active file has a Test Cases section.' : 'Your active file is missing a Test Cases section.',
+      `Tip: run \`${lastCmd}\` and review artifacts/logs.`
+    ].join(' ')
+    setCoachChat((c) => [...c, { role: 'user', text: q }, { role: 'assistant', text: response }])
+    setCoachInput('')
+    setRightOpen(true)
   }
 
   const onFileContextMenu = (e: MouseEvent<HTMLLIElement>, file: string) => {
@@ -426,6 +444,15 @@ buf.getvalue()
             <pre className="coach">{aiText}</pre>
             <h4>CLI Output</h4>
             <pre className="coach">{output || 'No output yet.'}</pre>
+            <h4>Ask AI Coach</h4>
+            <div className="coach-chat">
+              {coachChat.length === 0 && <div className="coach-empty">Ask anything about current chapter, file, or terminal error.</div>}
+              {coachChat.map((m, i) => <div key={i} className={`bubble ${m.role}`}>{m.text}</div>)}
+            </div>
+            <div className="coach-input">
+              <input value={coachInput} onChange={(e) => setCoachInput(e.target.value)} placeholder="Ask a question..." onKeyDown={(e) => e.key === 'Enter' && sendCoachMessage()} />
+              <button onClick={sendCoachMessage}>Send</button>
+            </div>
           </>
         )}
       </aside>
