@@ -1,0 +1,98 @@
+[
+  {
+    "id": "EXPLAIN_PROGRAM",
+    "category": "core-content",
+    "prompt": "explain this program to me",
+    "mustInclude": ["Robot Framework", "IDE"],
+    "mustNotInclude": ["Context:"],
+    "severity": "critical"
+  },
+  {
+    "id": "IMPORT_ZIP",
+    "category": "ui-flow",
+    "prompt": "how to import zip files?",
+    "mustInclude": ["Import expects a ZIP", "tests/*.robot"],
+    "mustNotInclude": ["Context:"],
+    "severity": "critical"
+  },
+  {
+    "id": "RUN_COMMAND",
+    "category": "command",
+    "prompt": "which command should i run now",
+    "mustInclude": ["run"],
+    "mustNotInclude": ["Context:"],
+    "severity": "critical"
+  },
+  {
+    "id": "REPORT_FILES",
+    "category": "artifacts",
+    "prompt": "how do i generate report.html and log.html",
+    "mustInclude": ["--output artifacts/output.xml", "report.html"],
+    "mustNotInclude": ["Context:"],
+    "severity": "critical"
+  },
+  {
+    "id": "DEBUG_FAILURE",
+    "category": "debug",
+    "prompt": "tests failed, help debug",
+    "mustInclude": ["Debug checklist", "Re-run:"],
+    "mustNotInclude": ["Context:"],
+    "severity": "critical"
+  },
+  {
+    "id": "FETCH_FAILURE",
+    "category": "debug",
+    "prompt": "fetch failed error, what now",
+    "mustInclude": ["retry runtime bootstrap", "Debug checklist"],
+    "mustNotInclude": ["Context:"],
+    "severity": "high"
+  },
+  {
+    "id": "QUALITY_IMPROVEMENT",
+    "category": "quality",
+    "prompt": "how can i improve quality of this chapter",
+    "mustInclude": ["Quality upgrades", "Current structure"],
+    "mustNotInclude": ["Context:"],
+    "severity": "high"
+  },
+  {
+    "id": "ARTIFACT_MISSING",
+    "category": "artifacts",
+    "prompt": "artifact not visible in left panel",
+    "mustInclude": ["artifacts", "left panel"],
+    "mustNotInclude": ["Context:"],
+    "severity": "high"
+  },
+  {
+    "id": "BEGINNER_FIRST_STEPS",
+    "category": "beginner-guidance",
+    "prompt": "i am new what are first 3 steps",
+    "mustInclude": ["Chapter", "Objective"],
+    "mustNotInclude": ["Context:"],
+    "severity": "high"
+  },
+  {
+    "id": "NEXT_ACTION",
+    "category": "workflow",
+    "prompt": "what should i do next",
+    "mustInclude": ["Next action"],
+    "mustNotInclude": ["Context:"],
+    "severity": "medium"
+  },
+  {
+    "id": "GENERIC_HELP",
+    "category": "fallback",
+    "prompt": "help me",
+    "mustInclude": ["Chapter", "Objective"],
+    "mustNotInclude": ["Context:"],
+    "severity": "medium"
+  },
+  {
+    "id": "VARIABLES_EXPLANATION",
+    "category": "variables",
+    "prompt": "how do variables work in this chapter",
+    "mustInclude": ["Chapter", "Objective"],
+    "mustNotInclude": ["Context:"],
+    "severity": "medium"
+  }
+]

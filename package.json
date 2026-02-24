@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "qa:e2e": "npx playwright test"
+    "qa:e2e": "npx playwright test",
+    "eval:coach": "node scripts/run-ai-coach-eval.mjs --min-pass-rate=100 --chapter-limit=10",
+    "eval:coach:relaxed": "node scripts/run-ai-coach-eval.mjs --min-pass-rate=0 --chapter-limit=10"
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.81",
