@@ -15,8 +15,35 @@ button{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 1
 .right{border-left:1px solid #233046;background:#0f172a;transition:.2s ease;overflow:hidden;min-width:0}.right.collapsed{width:auto}.right.open{width:auto}.right-head{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #233046}.right.collapsed .right-head{justify-content:center;gap:0;padding:10px 6px}.right.collapsed .right-head strong{font-size:12px}.right.collapsed .right-head button{padding:6px 8px}
 .coach{padding:10px;margin:0;white-space:pre-wrap;font-size:12px;color:#d9e5ff}
 @media (max-width: 1200px){
-  .vscode.right-closed{grid-template-columns:240px 1fr 52px}
-  .vscode.right-open{grid-template-columns:240px 1fr 300px}
-  .top-actions select{min-width:220px}
+  .vscode.right-closed{grid-template-columns:220px 1fr 48px}
+  .vscode.right-open{grid-template-columns:220px 1fr 260px}
+  .top-actions select{min-width:190px}
+  .icon-actions{flex-wrap:wrap}
+  .icon-actions button{padding:5px 6px}
 }
+
+@media (max-width: 900px){
+  .vscode{grid-template-rows:56px auto auto auto}
+  .vscode.right-closed,
+  .vscode.right-open{grid-template-columns:1fr}
+  .topbar{flex-direction:column;align-items:stretch;padding:8px 10px}
+  .top-actions{justify-content:space-between}
+  .top-actions select{min-width:0;flex:1}
+  .left,.center,.right{grid-column:1/-1}
+  .left{max-height:220px;border-right:none;border-bottom:1px solid #233046}
+  .center{min-height:55vh}
+  .right{border-left:none;border-top:1px solid #233046}
+  .right.collapsed{height:44px}
+  .right.open{height:260px}
+  .terminal{height:30vh}
+}
+
+@media (max-width: 600px){
+  .brand{flex-direction:column;align-items:flex-start;gap:2px}
+  .top-actions{gap:6px}
+  button{padding:6px 8px;font-size:12px}
+  .editor-head{font-size:12px}
+  .filetree li{font-size:12px}
+}
+
 .build-stamp{position:fixed;right:10px;bottom:8px;font-size:10px;color:#7f8ea3;background:#0f172a;border:1px solid #334155;border-radius:999px;padding:3px 8px;opacity:.85}
