@@ -27,9 +27,10 @@ h3{margin:0;color:#e2e8f0}
 .left-footer{margin-top:auto;display:flex;gap:8px;padding-top:10px;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(15,23,42,0),rgba(15,23,42,1) 25%)}
 .muted-li{color:#7b8aa3;font-style:italic}
 
-.center{display:flex;flex-direction:column;min-width:0}
+.center{display:flex;flex-direction:column;min-width:0;height:calc(100vh - 56px)}
 .editor-head{padding:8px 12px;border-bottom:1px solid #233046;background:#0f172a;color:#a7b7ce;font-size:13px}
-.terminal{border-top:1px solid #233046;background:#0a1220;height:30vh;display:flex;flex-direction:column}
+.editor-pane{flex:1;min-height:0}
+.terminal{border-top:1px solid #233046;background:#0a1220;min-height:220px;height:34%;display:flex;flex-direction:column}
 .error-banner{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 10px;background:#3f1a1a;color:#fecaca;border-bottom:1px solid #7f1d1d;font-size:12px}
 .terminal-log{flex:1;overflow:auto;padding:10px;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap}
 .terminal-input{display:flex;gap:8px;padding:8px;border-top:1px solid #233046;align-items:center}
@@ -76,6 +77,8 @@ h3{margin:0;color:#e2e8f0}
   .topbar{flex-direction:column;align-items:stretch}
   .left,.center,.right{grid-column:1/-1}
   .left{max-height:240px;border-right:none;border-bottom:1px solid #233046}
+  .center{height:auto;min-height:60vh}
+  .terminal{height:34vh}
   .right{border-left:none;border-top:1px solid #233046}
   .right.open{height:320px}
 }

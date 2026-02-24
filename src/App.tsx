@@ -453,15 +453,17 @@ buf.getvalue()
 
       <main className="center">
         <div className="editor-head">{activeFile || 'No file selected'}</div>
-        <Editor
-          height="50vh"
-          beforeMount={configureRobotMonaco}
-          language={activeFile.endsWith('.robot') || activeFile.endsWith('.resource') ? 'robotframework' : activeFile.endsWith('.py') ? 'python' : 'plaintext'}
-          value={activeFile ? files[activeFile] : ''}
-          onChange={(v) => activeFile && setFiles((p) => ({ ...p, [activeFile]: v ?? '' }))}
-          theme="vs-dark"
-          options={{ minimap: { enabled: false }, fontSize: 14, lineNumbers: 'on' }}
-        />
+        <div className="editor-pane">
+          <Editor
+            height="100%"
+            beforeMount={configureRobotMonaco}
+            language={activeFile.endsWith('.robot') || activeFile.endsWith('.resource') ? 'robotframework' : activeFile.endsWith('.py') ? 'python' : 'plaintext'}
+            value={activeFile ? files[activeFile] : ''}
+            onChange={(v) => activeFile && setFiles((p) => ({ ...p, [activeFile]: v ?? '' }))}
+            theme="vs-dark"
+            options={{ minimap: { enabled: false }, fontSize: 14, lineNumbers: 'on' }}
+          />
+        </div>
 
         <div className="terminal">
           {fetchError && (
