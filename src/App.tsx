@@ -7,45 +7,26 @@ type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
 type AIRoute = 'webllm-primary' | 'webllm-fallback' | 'wllama-fallback' | 'heuristic'
 
-const rfVersions = ['3.1', '3.2', '4.1', '5.0', '6.1']
-
-const starterTemplates: Record<string, FileMap> = {
-  'Smoke Test': {
-    'tests/smoke.robot': `*** Settings ***
-Library    BuiltIn
-
-*** Test Cases ***
-Open Home Page
-    Log    This is a smoke test`,
-    'resources/common.resource': `*** Keywords ***
-Open App
-    Log    Opening app`,
-  },
-  'Best Practice': {
-    'tests/login.robot': `*** Settings ***
-Resource    ../resources/common.resource
-
-*** Test Cases ***
-Login Happy Path
-    Given app is open
-    When user logs in with valid credentials
-    Then dashboard is visible`,
-    'resources/common.resource': `*** Keywords ***
-Given app is open
-    Log    Open browser and navigate
-
-When user logs in with valid credentials
-    Log    Fill user/password and submit
-
-Then dashboard is visible
-    Log    Assert dashboard`,
-  },
+type Chapter = {
+  id: string
+  title: string
+  level: 'Beginner' | 'Intermediate' | 'Advanced'
+  outcomes: string[]
+  challenge: string
+  rubric: string[]
+  files: FileMap
 }
 
-const learningPaths: Array<{ name: string; outcomes: string[]; files: FileMap }> = [
+const rfVersions = ['3.1', '3.2', '4.1', '5.0', '6.1']
+
+const chapters: Chapter[] = [
   {
-    name: 'Variables + Keywords + Multi-file Basics',
-    outcomes: ['Use Variables file', 'Share keywords via resource', 'Run one suite with clean structure'],
+    id: 'ch1',
+    title: 'Variables + Shared Keywords',
+    level: 'Beginner',
+    outcomes: ['Use variables.py', 'Call keywords from resource file', 'Understand suite structure'],
+    challenge: 'Add one new test case that reuses existing keywords and variables.',
+    rubric: ['Has *** Test Cases ***', 'Calls shared keyword', 'Uses variable from variables.py'],
     files: {
       'tests/01_variables_keywords.robot': `*** Settings ***
 Variables    ../resources/variables.py
@@ -74,8 +55,12 @@ EXPECTED_TITLE = "Demo Dashboard"
     },
   },
   {
-    name: 'POM + Locators + Override Variables',
-    outcomes: ['Separate locators into one file', 'Use page object keywords', 'Override env from CLI variable'],
+    id: 'ch2',
+    title: 'POM + Locators + Env Override',
+    level: 'Intermediate',
+    outcomes: ['Use page objects', 'Centralize locators', 'Override env vars from CLI'],
+    challenge: 'Add a logout scenario using the same page object model style.',
+    rubric: ['Uses resource page object', 'Has locator variables', 'Includes override command note'],
     files: {
       'tests/02_pom_style.robot': `*** Settings ***
 Variables    ../resources/env.py
@@ -106,12 +91,16 @@ Then User Should Reach Home
 `,
       'resources/env.py': `APP_URL = "https://example.test/login"
 `,
-      'README-run.md': `Run with override example:\nrobot -v APP_URL:https://staging.example.test/login tests/02_pom_style.robot`,
+      'README-run.md': `Run override example:\nrobot -v APP_URL:https://staging.example.test/login tests/02_pom_style.robot`,
     },
   },
   {
-    name: 'Reports + Tags + Suite Metadata',
-    outcomes: ['Add docs/tags for maintainability', 'Generate report/log/output files', 'Model production-style suite metadata'],
+    id: 'ch3',
+    title: 'Reports + Tags + Metadata',
+    level: 'Advanced',
+    outcomes: ['Generate report/log/output', 'Use tags and metadata', 'Document tests for teams'],
+    challenge: 'Add one regression-tagged test and include clear test documentation.',
+    rubric: ['Uses Test Tags', 'Has Metadata', 'Includes report command'],
     files: {
       'tests/03_reporting.robot': `*** Settings ***
 Documentation    Example suite for report and log generation
@@ -152,84 +141,51 @@ async function ensurePyodide() {
 }
 
 function App() {
-  const [files, setFiles] = useState<FileMap>(starterTemplates['Smoke Test'])
-  const [activeFile, setActiveFile] = useState(Object.keys(starterTemplates['Smoke Test'])[0])
+  const [selectedChapter, setSelectedChapter] = useState(chapters[0])
+  const [files, setFiles] = useState<FileMap>(chapters[0].files)
+  const [activeFile, setActiveFile] = useState(Object.keys(chapters[0].files)[0])
   const [rfVersion, setRfVersion] = useState('6.1')
-  const [output, setOutput] = useState('Welcome. Start with template → edit → run check.')
+  const [output, setOutput] = useState('Welcome. Pick chapter → edit files → run checks.')
   const [running, setRunning] = useState(false)
   const [aiStatus, setAiStatus] = useState('Not initialized')
   const [aiRoute, setAiRoute] = useState<AIRoute>('heuristic')
   const [engine, setEngine] = useState<any>(null)
-  const [showGuide, setShowGuide] = useState(true)
   const [toast, setToast] = useState('')
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
 
-  const pulse = (msg: string) => {
-    setToast(msg)
-    window.setTimeout(() => setToast(''), 1800)
+  const pulse = (m: string) => {
+    setToast(m)
+    window.setTimeout(() => setToast(''), 1600)
   }
 
-  const createFile = () => {
-    const name = prompt('New file path (example: tests/new.robot)')
-    if (!name || files[name]) return
-    setFiles((prev) => ({ ...prev, [name]: '*** Test Cases ***\nNew Test\n    Log    Hello' }))
-    setActiveFile(name)
-    pulse('File created')
-  }
-
-  const renameFile = () => {
-    const next = prompt('Rename file to:', activeFile)
-    if (!next || next === activeFile || files[next]) return
-    const content = files[activeFile]
-    setFiles((prev) => {
-      const clone = { ...prev }
-      delete clone[activeFile]
-      clone[next] = content
-      return clone
-    })
-    setActiveFile(next)
-    pulse('File renamed')
-  }
-
-  const deleteFile = () => {
-    if (!confirm(`Delete ${activeFile}?`)) return
-    setFiles((prev) => {
-      const clone = { ...prev }
-      delete clone[activeFile]
-      return clone
-    })
-    const remaining = fileList.filter((f) => f !== activeFile)
-    setActiveFile(remaining[0] || '')
-    pulse('File deleted')
-  }
-
-  const loadTemplate = (name: string) => {
-    const tpl = starterTemplates[name]
-    setFiles(tpl)
-    setActiveFile(Object.keys(tpl)[0])
-    setOutput(`Loaded template: ${name}`)
-    pulse(`Template: ${name}`)
-  }
-
-  const loadLearningPath = (name: string) => {
-    const pack = learningPaths.find((x) => x.name === name)
-    if (!pack) return
-    setFiles(pack.files)
-    const first = Object.keys(pack.files).sort()[0]
+  const loadChapter = (id: string) => {
+    const chapter = chapters.find((c) => c.id === id)
+    if (!chapter) return
+    setSelectedChapter(chapter)
+    setFiles(chapter.files)
+    const first = Object.keys(chapter.files).sort()[0]
     setActiveFile(first)
-    setOutput(`Loaded lesson: ${pack.name}\n\nYou will learn:\n- ${pack.outcomes.join('\n- ')}`)
-    pulse('Lesson loaded')
+    setOutput(`Loaded ${chapter.title}\n\nOutcomes:\n- ${chapter.outcomes.join('\n- ')}\n\nChallenge:\n${chapter.challenge}`)
+    pulse(`${chapter.level} chapter loaded`)
   }
 
   const runValidation = () => {
     const text = files[activeFile] || ''
-    const hasSection = text.includes('*** Test Cases ***')
+    const checks = [
+      text.includes('*** Test Cases ***'),
+      text.includes('*** Settings ***') || activeFile.endsWith('.md'),
+      text.length > 30,
+    ]
     setOutput([
       `Robot Framework v${rfVersion} check complete`,
-      hasSection ? '✔ Test Cases section found' : '✖ Missing *** Test Cases *** section',
       `File: ${activeFile}`,
+      `Quality: ${checks.filter(Boolean).length}/3`,
+      checks[0] ? '✔ Test Cases section' : '✖ Add *** Test Cases ***',
+      checks[1] ? '✔ Settings/Doc structure' : '✖ Add *** Settings ***',
+      '',
+      `Challenge: ${selectedChapter.challenge}`,
     ].join('\n'))
     pulse('Validation complete')
   }
@@ -238,14 +194,11 @@ function App() {
     if (!activeFile) return
     setRunning(true)
     try {
-      setOutput('Loading Pyodide runtime...')
       const pyodide = await ensurePyodide()
-      const text = files[activeFile] || ''
-      pyodide.globals.set('robot_text', text)
+      pyodide.globals.set('robot_text', files[activeFile] || '')
       const result = pyodide.runPython(`
 lines = robot_text.splitlines()
-has_tc = any('*** Test Cases ***' in x for x in lines)
-'Pyodide runtime check complete\\nTest Cases section: ' + ('FOUND' if has_tc else 'MISSING') + '\\nLine count: ' + str(len(lines))
+'Pyodide runtime check complete\\nLine count: ' + str(len(lines))
       `)
       setOutput(String(result))
       pulse('Runtime check complete')
@@ -260,45 +213,38 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
     setAiStatus('Initializing...')
     try {
       const webllm = await import('@mlc-ai/web-llm')
-      const primary = 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC'
-      const fallback = 'Llama-3.2-1B-Instruct-q4f16_1-MLC'
       try {
-        const e = await webllm.CreateMLCEngine(primary, { initProgressCallback: (p: any) => setAiStatus(`WebLLM primary: ${Math.round((p.progress || 0) * 100)}%`) })
+        const e = await webllm.CreateMLCEngine('Qwen2.5-1.5B-Instruct-q4f16_1-MLC')
         setEngine(e)
         setAiRoute('webllm-primary')
-        setAiStatus(`Ready with ${primary}`)
+        setAiStatus('Ready with Qwen2.5-1.5B')
       } catch {
-        const e2 = await webllm.CreateMLCEngine(fallback, { initProgressCallback: (p: any) => setAiStatus(`WebLLM fallback: ${Math.round((p.progress || 0) * 100)}%`) })
+        const e2 = await webllm.CreateMLCEngine('Llama-3.2-1B-Instruct-q4f16_1-MLC')
         setEngine(e2)
         setAiRoute('webllm-fallback')
-        setAiStatus(`Ready with ${fallback}`)
+        setAiStatus('Ready with Llama-3.2-1B')
       }
       pulse('AI initialized')
     } catch {
       setAiRoute('wllama-fallback')
-      setAiStatus('WebLLM unavailable. wllama GGUF fallback will be wired in next patch.')
+      setAiStatus('WebLLM unavailable. Fallback hook active.')
     }
   }
 
-  const explainWithAI = async () => {
+  const checkMySolution = async () => {
     const text = files[activeFile] || ''
-    if (!text) return
     if (engine) {
       const r = await engine.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are a strict Robot Framework assistant. Keep output concise and practical.' },
-          { role: 'user', content: `Review this Robot Framework file and provide issues + improvements:\n\n${text}` },
+          { role: 'system', content: 'Grade this Robot Framework solution with concise feedback.' },
+          { role: 'user', content: `Rubric:\n- ${selectedChapter.rubric.join('\n- ')}\n\nFile:\n${text}` },
         ],
       })
       setOutput(r.choices?.[0]?.message?.content || 'No response')
       return
     }
-    const hints = []
-    if (!text.includes('*** Test Cases ***')) hints.push('Add *** Test Cases *** section.')
-    if (!text.includes('*** Settings ***')) hints.push('Add *** Settings *** for clearer dependencies.')
-    if (text.includes('Log    ')) hints.push('Replace placeholder Log steps with business-intent keywords.')
-    if (!hints.length) hints.push('Structure looks good. Next: add assertions and reusable keywords.')
-    setOutput(`[${aiRoute}]\n` + hints.map((h) => `- ${h}`).join('\n'))
+    const hits = selectedChapter.rubric.filter((r) => text.toLowerCase().includes(r.toLowerCase().split(' ')[1] || ''))
+    setOutput(`Heuristic chapter rubric result: ${hits.length}/${selectedChapter.rubric.length}\n- ${selectedChapter.rubric.join('\n- ')}`)
   }
 
   const exportProject = async () => {
@@ -308,7 +254,7 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'robot-framework-ide-project.zip'
+    a.download = `robot-framework-ide-${selectedChapter.id}.zip`
     a.click()
     URL.revokeObjectURL(url)
     pulse('Project exported')
@@ -336,17 +282,19 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
       {toast && <div className="toast">{toast}</div>}
       <aside className="sidebar">
         <h2>Robot Framework IDE</h2>
-        <p className="subtle">Premium browser-native authoring. Built to feel obvious from first click.</p>
+        <p className="subtle">No setup. Practical chapters. Real multi-file learning.</p>
+
+        <h3>Chapter Navigator</h3>
+        <div className="templateButtons">
+          {chapters.map((c) => (
+            <button key={c.id} onClick={() => loadChapter(c.id)}>{c.level}: {c.title}</button>
+          ))}
+        </div>
+
         <label>Robot Version</label>
         <select value={rfVersion} onChange={(e) => setRfVersion(e.target.value)}>
           {rfVersions.map((v) => <option key={v} value={v}>v{v}</option>)}
         </select>
-
-        <div className="actions">
-          <button onClick={createFile}>New</button>
-          <button onClick={renameFile} disabled={!activeFile}>Rename</button>
-          <button onClick={deleteFile} disabled={!activeFile}>Delete</button>
-        </div>
 
         <div className="templateButtons" style={{ marginTop: 10 }}>
           <button onClick={exportProject}>Export ZIP</button>
@@ -360,37 +308,20 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
             <li key={file} className={file === activeFile ? 'active' : ''} onClick={() => setActiveFile(file)}>{file}</li>
           ))}
         </ul>
-
-        <h3>Starter Templates</h3>
-        <div className="templateButtons">
-          {Object.keys(starterTemplates).map((name) => <button key={name} onClick={() => loadTemplate(name)}>{name}</button>)}
-        </div>
-
-        <h3>Guided Learning Paths</h3>
-        <div className="templateButtons">
-          {learningPaths.map((p) => <button key={p.name} onClick={() => loadLearningPath(p.name)}>{p.name}</button>)}
-        </div>
       </aside>
 
       <main className="main">
         <div className="hero">
-          <h1>Ship Robot tests faster, with confidence.</h1>
-          <p>Pick a template, edit, run checks, and ask AI for improvements.</p>
+          <h1>{selectedChapter.title}</h1>
+          <p>{selectedChapter.challenge}</p>
         </div>
 
-        {showGuide && (
-          <section className="guide">
-            <div className="guideHead">
-              <strong>Start in 30 seconds</strong>
-              <button className="ghost" onClick={() => setShowGuide(false)}>Hide</button>
-            </div>
-            <div className="steps">
-              <div><span>1</span>Choose <b>Best Practice</b> template</div>
-              <div><span>2</span>Edit steps in the center editor</div>
-              <div><span>3</span>Click <b>Run Check</b> then <b>Explain with AI</b></div>
-            </div>
-          </section>
-        )}
+        <div className="guide">
+          <div className="guideHead"><strong>You will learn</strong></div>
+          <div className="steps">
+            {selectedChapter.outcomes.map((o, i) => <div key={o}><span>{i + 1}</span>{o}</div>)}
+          </div>
+        </div>
 
         <div className="toolbar">
           <span>{activeFile || 'No file selected'}</span>
@@ -398,7 +329,7 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
             <button onClick={runValidation} disabled={!activeFile}>Run Check</button>
             <button onClick={runPyodideCheck} disabled={!activeFile || running}>{running ? 'Running...' : 'Run Runtime Check'}</button>
             <button onClick={initAI}>Init AI</button>
-            <button onClick={explainWithAI} disabled={!activeFile}>Explain with AI</button>
+            <button onClick={checkMySolution} disabled={!activeFile}>Check My Solution</button>
           </div>
         </div>
 
@@ -420,7 +351,7 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
             <h3>AI Route</h3>
             <p><strong>Current route:</strong> {aiRoute}</p>
             <p><strong>Status:</strong> {aiStatus}</p>
-            <p className="subtle">Route: Qwen 1.5B → Llama 1B → wllama fallback hook → heuristic.</p>
+            <p className="subtle">Route: Qwen 1.5B → Llama 1B → wllama hook → heuristic.</p>
           </div>
         </section>
       </main>
