@@ -25,26 +25,17 @@ Output style:
 const normalize = (s: string) => s.toLowerCase().trim()
 const has = (q: string, words: string[]) => words.some((w) => q.includes(w))
 
-function buildContextSummary(ctx: CoachContext): string {
-  const hasSettings = ctx.activeText.includes('*** Settings ***')
-  const hasTests = ctx.activeText.includes('*** Test Cases ***')
-  const hasKeywords = ctx.activeText.includes('*** Keywords ***')
-  return `Chapter ${ctx.chapterId}: ${ctx.chapterTitle}; objective=${ctx.objective}; file=${ctx.activeFile}; settings=${hasSettings}; tests=${hasTests}; keywords=${hasKeywords}; lastCmd=${ctx.lastCmd}; artifacts=${ctx.artifacts.join(', ') || 'none'}`
-}
-
 export function generateCoachResponse(question: string, ctx: CoachContext): string {
   const q = normalize(question)
   const hasSettings = ctx.activeText.includes('*** Settings ***')
   const hasTests = ctx.activeText.includes('*** Test Cases ***')
   const hasKeywords = ctx.activeText.includes('*** Keywords ***')
-  const contextLine = buildContextSummary(ctx)
 
   if (has(q, ['what does this program do', 'what this program do', 'what does this app do', 'explain this program'])) {
     return [
       'This is a browser-based Robot Framework learning IDE.',
       'You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html).',
       'Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.',
-      `Context: ${contextLine}`,
     ].join(' ')
   }
 
@@ -53,7 +44,6 @@ export function generateCoachResponse(question: string, ctx: CoachContext): stri
       'Import expects a ZIP with project-style paths (example: tests/*.robot, resources/*.resource).',
       'On import, current file tree is replaced by ZIP contents.',
       'Use Help → Download sample import zip for a known-good structure.',
-      `Context: ${contextLine}`,
     ].join(' ')
   }
 
@@ -66,7 +56,6 @@ export function generateCoachResponse(question: string, ctx: CoachContext): stri
       '3) Validate file path passed to robot command.',
       '4) If fetch/network appears, retry runtime bootstrap and verify connectivity.',
       `Terminal tail: ${tail}`,
-      `Context: ${contextLine}`,
     ].join(' ')
   }
 
@@ -77,7 +66,6 @@ export function generateCoachResponse(question: string, ctx: CoachContext): stri
       '`robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot`',
       artifactSummary,
       'Then click an artifact in left panel to preview.',
-      `Context: ${contextLine}`,
     ].join(' ')
   }
 
@@ -89,7 +77,6 @@ export function generateCoachResponse(question: string, ctx: CoachContext): stri
       '- reusable keywords in resource files',
       '- avoid duplicate steps',
       `Current structure: Settings=${hasSettings ? 'ok' : 'missing'}, Test Cases=${hasTests ? 'ok' : 'missing'}, Keywords=${hasKeywords ? 'ok' : 'missing'}`,
-      `Context: ${contextLine}`,
     ].join(' ')
   }
 
@@ -98,7 +85,6 @@ export function generateCoachResponse(question: string, ctx: CoachContext): stri
     `Active file: ${ctx.activeFile}.`,
     `Next action: run ${ctx.lastCmd} and inspect terminal + artifacts.`,
     'Ask specific topics (import, debug, reports, quality) for targeted steps.',
-    `Context: ${contextLine}`,
   ].join(' ')
 }
 
