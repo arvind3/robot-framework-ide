@@ -9,8 +9,11 @@ Ensure browser-side Robot Framework semantic highlighting remains correct and st
 - Core analyzer (`src/robotSemanticCore.ts`)
 
 ## Test design
-- 15 base syntax scenarios × 2 variants (normal + pipe style) = 30 cases
+- 17 base syntax scenarios × 3 variants (normal + pipe style + trailing-comment) = 51 cases
 - Coverage includes:
+  - cross-file resource import keyword resolution
+  - unknown keyword error tagging
+  - snapshot-hash stability in report output
   - section headers
   - variables (`${}`, `@{}`, `&{}`, `%{}`)
   - comments (line + inline)

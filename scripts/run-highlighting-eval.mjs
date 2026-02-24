@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import crypto from 'node:crypto'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -16,6 +17,11 @@ function run(cmd, args, cwd = repoRoot) {
 
 function hasToken(tokens, tokenType) {
   return tokens.some((t) => t.tokenType === tokenType)
+}
+
+function hashTokens(tokens) {
+  const payload = tokens.map((t) => `${t.line}:${t.start}:${t.length}:${t.tokenType}`).join('|')
+  return crypto.createHash('sha1').update(payload).digest('hex').slice(0, 12)
 }
 
 async function main() {
@@ -42,16 +48,34 @@ async function main() {
     { id: 'LIST_VAR', text: 'Log    @{items}', expect: ['variable'] },
     { id: 'PERCENT_VAR', text: 'Log    %{HOME}', expect: ['variable'] },
     { id: 'MIXED', text: '*** Keywords ***\nDo Work\n    [Arguments]    ${u}\n    Log    ${u}', expect: ['keywordDefinition', 'setting', 'variable', 'keywordCall'] },
+    {
+      id: 'CROSS_FILE_RESOURCE_KEYWORD',
+      text: '*** Settings ***\nResource    resources/common.resource\n\n*** Test Cases ***\nT\n    Get Welcome Message',
+      expect: ['setting', 'keywordCall'],
+      ctx: {
+        currentFile: 'main.robot',
+        projectFiles: {
+          'main.robot': '*** Settings ***\nResource    resources/common.resource\n\n*** Test Cases ***\nT\n    Get Welcome Message',
+          'resources/common.resource': '*** Keywords ***\nGet Welcome Message\n    Log    hello',
+        },
+      },
+    },
+    {
+      id: 'UNKNOWN_KEYWORD_ERROR',
+      text: '*** Test Cases ***\nT\n    Not Existing Keyword',
+      expect: ['keywordCall', 'error'],
+    },
   ]
 
   const cases = []
   for (const c of baseCases) {
     cases.push(c)
-    cases.push({ id: `${c.id}_PIPE`, text: c.text.replace(/\n/g, '\n|    ').replace(/^/, '|    '), expect: c.expect })
+    cases.push({ ...c, id: `${c.id}_PIPE`, text: c.text.replace(/\n/g, '\n|    ').replace(/^/, '|    ') })
+    cases.push({ ...c, id: `${c.id}_TRAILING_COMMENT`, text: `${c.text}\n# tail` })
   }
 
   const results = cases.map((c) => {
-    const tokens = analyzeRobotSemanticTokens(c.text)
+    const tokens = analyzeRobotSemanticTokens(c.text, c.ctx || {})
     const missing = c.expect.filter((e) => !hasToken(tokens, e))
     const pass = missing.length === 0
     return {
@@ -62,6 +86,7 @@ async function main() {
       actualTypes: [...new Set(tokens.map((t) => t.tokenType))],
       tokenCount: tokens.length,
       sample: c.text,
+      snapshot: hashTokens(tokens),
     }
   })
 
@@ -75,7 +100,9 @@ async function main() {
     passRate: Number(((passed / total) * 100).toFixed(1)),
   }
 
-  await fs.writeFile(path.join(reportDir, 'latest.json'), JSON.stringify({ summary, results }, null, 2), 'utf8')
+  const snapshots = Object.fromEntries(results.map((r) => [r.id, r.snapshot]))
+
+  await fs.writeFile(path.join(reportDir, 'latest.json'), JSON.stringify({ summary, snapshots, results }, null, 2), 'utf8')
 
   let md = '# Robot Syntax Highlighting Evaluation Report\n\n'
   md += `- Generated: ${summary.generatedAt}\n`
@@ -83,9 +110,9 @@ async function main() {
   md += `- Passed: ${summary.passed}\n`
   md += `- Failed: ${summary.failed}\n`
   md += `- Pass rate: ${summary.passRate}%\n\n`
-  md += '| # | Case | Expected Tokens | Actual Tokens | Status |\n|---|---|---|---|---|\n'
+  md += '| # | Case | Expected Tokens | Actual Tokens | Snapshot | Status |\n|---|---|---|---|---|---|\n'
   results.forEach((r, i) => {
-    md += `| ${i + 1} | ${r.id} | ${r.expected.join(', ')} | ${r.actualTypes.join(', ')} | ${r.pass ? 'PASS' : 'FAIL'} |\n`
+    md += `| ${i + 1} | ${r.id} | ${r.expected.join(', ')} | ${r.actualTypes.join(', ')} | ${r.snapshot} | ${r.pass ? 'PASS' : 'FAIL'} |\n`
   })
 
   md += '\n## Failed Case Details\n\n'
@@ -98,6 +125,7 @@ async function main() {
       md += `- Missing tokens: ${r.missing.join(', ')}\n`
       md += `- Expected: ${r.expected.join(', ')}\n`
       md += `- Actual: ${r.actualTypes.join(', ')}\n`
+      md += `- Snapshot: ${r.snapshot}\n`
       md += `- Sample: ${r.sample.replace(/\n/g, ' ⏎ ')}\n\n`
     })
   }

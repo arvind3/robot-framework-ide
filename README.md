@@ -87,6 +87,9 @@ npm run build
 - Layer 1: Monaco lexical tokenization for instant baseline coloring
 - Layer 2: Worker-based local semantic analysis (`src/robotSemanticWorker.ts` + `src/robotSemanticCore.ts`)
 - Semantic tokens are provided to Monaco via `registerDocumentSemanticTokensProvider`
+- Cross-file awareness for `Resource` imports and keyword definition resolution
+- Performance optimizations: worker isolation + provider cache + snapshot-hash regression checks
+- Default mode uses semantic highlighting with a UI fallback toggle (`Semantic: On/Off`)
 - No backend dependency required for syntax highlighting
 
 ## AI Coach Eval Commands

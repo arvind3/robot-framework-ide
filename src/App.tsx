@@ -1,10 +1,10 @@
-import { useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react'
 import Editor from '@monaco-editor/react'
 import JSZip from 'jszip'
 import './App.css'
 import { generateCoachResponse, runCoachEval } from './coach'
 import { bookChapters, type Chapter } from './bookChapters'
-import { registerRobotSemanticProvider } from './robotSemanticProvider'
+import { registerRobotSemanticProvider, setRobotSemanticProjectContextProvider } from './robotSemanticProvider'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
@@ -83,11 +83,19 @@ function App() {
   const [coachTopPct, setCoachTopPct] = useState(55)
   const [isResizingCoach, setIsResizingCoach] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
+  const [semanticHighlightingEnabled, setSemanticHighlightingEnabled] = useState(true)
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
   const buildIdFull = String((import.meta as any).env?.VITE_BUILD_ID || 'local')
   const buildIdShort = buildIdFull.slice(0, 5)
+
+  useEffect(() => {
+    setRobotSemanticProjectContextProvider(() => ({
+      currentFile: activeFile,
+      projectFiles: files,
+    }))
+  }, [activeFile, files])
 
   const loadChapter = (id: string) => {
     const c = chapters.find((x) => x.id === id)
@@ -235,29 +243,80 @@ items
     setFetchError('')
     setTerminal((p) => [...p, `$ ${command}`])
 
+    const isRobotCmd = command.startsWith('robot ')
+    if (isRobotCmd) {
+      const argTail = command.replace(/^robot\s+/, '').trim()
+      const target = argTail.split(/\s+/).find((x) => x.endsWith('.robot') || x.endsWith('.resource'))
+      if (!target) {
+        const msg = 'Validation error: robot command must include a .robot suite file (example: robot main.robot)'
+        setTerminal((p) => [...p, msg])
+        setOutput(msg)
+        setRuntimeHealth('degraded')
+        return
+      }
+      if (!files[target]) {
+        const msg = `Validation error: target file not found in workspace: ${target}`
+        setTerminal((p) => [...p, msg])
+        setOutput(msg)
+        setRuntimeHealth('degraded')
+        setRightOpen(true)
+        setAiText(generateCoachResponse('tests failed, help debug', {
+          chapterId: selectedChapter.id,
+          chapterTitle: selectedChapter.title,
+          objective: selectedChapter.objective,
+          activeFile,
+          activeText: files[activeFile] || '',
+          lastCmd: command,
+          terminalTail: [...terminal.slice(-6), msg],
+          artifacts: artifacts.map((a) => a.path),
+        }))
+        return
+      }
+    }
+
     try {
       const pyodide = await ensurePyodideAndRobot(setTerminal)
       await syncFilesToPyodide(pyodide)
 
-      if (command.startsWith('robot ')) {
+      if (isRobotCmd) {
         const args = command.replace(/^robot\s+/, '').split(' ').filter(Boolean)
         const py = `
 from robot import run_cli
-import io, contextlib
+import io, contextlib, json
 buf = io.StringIO()
+rc = 0
 try:
     with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-        run_cli(${JSON.stringify(args)}, exit=False)
+        ret = run_cli(${JSON.stringify(args)}, exit=False)
+    rc = int(ret or 0)
 except Exception as e:
+    rc = 255
     buf.write(str(e))
-buf.getvalue()
+json.dumps({"rc": rc, "output": buf.getvalue()})
 `
         const result = await pyodide.runPythonAsync(py)
-        const text = String(result || '').trim() || '(no output)'
-        setTerminal((p) => [...p, text])
-        setOutput(text)
-        setRuntimeHealth('ok')
+        const parsed = JSON.parse(String(result || '{"rc":255,"output":""}')) as { rc: number; output: string }
+        const text = String(parsed.output || '').trim() || '(no output)'
+        const statusLine = parsed.rc === 0 ? '✅ Robot run succeeded (rc=0)' : `❌ Robot run failed (rc=${parsed.rc})`
+        setTerminal((p) => [...p, statusLine, text])
+        setOutput(`${statusLine}\n${text}`)
+        setRuntimeHealth(parsed.rc === 0 ? 'ok' : 'degraded')
         await refreshArtifacts(pyodide)
+
+        if (parsed.rc !== 0 || /\bFAIL\b|Traceback|ERROR:/i.test(text)) {
+          setRightOpen(true)
+          setAiText(generateCoachResponse('tests failed, help debug', {
+            chapterId: selectedChapter.id,
+            chapterTitle: selectedChapter.title,
+            objective: selectedChapter.objective,
+            activeFile,
+            activeText: files[activeFile] || '',
+            lastCmd: command,
+            terminalTail: [...terminal.slice(-6), statusLine, text.slice(0, 500)],
+            artifacts: artifacts.map((a) => a.path),
+          }))
+          setCoachChat((c) => [...c, { role: 'assistant', text: 'Detected failure. I added a debug plan above in AI Coach panel.' }])
+        }
       } else if (command === 'help') {
         setTerminal((p) => [...p, 'Commands: robot <suite.robot>, coach:selftest, help, clear'])
       } else if (command === 'coach:selftest') {
@@ -273,6 +332,17 @@ buf.getvalue()
       setOutput(`Command failed: ${msg}`)
       setRuntimeHealth('degraded')
       if (/fetch|network|resolve|dns/i.test(msg)) setFetchError(`Runtime fetch failed: ${msg}`)
+      setRightOpen(true)
+      setAiText(generateCoachResponse('tests failed, help debug', {
+        chapterId: selectedChapter.id,
+        chapterTitle: selectedChapter.title,
+        objective: selectedChapter.objective,
+        activeFile,
+        activeText: files[activeFile] || '',
+        lastCmd: command,
+        terminalTail: [...terminal.slice(-8), `Error: ${msg}`],
+        artifacts: artifacts.map((a) => a.path),
+      }))
     }
   }
 
@@ -358,6 +428,9 @@ buf.getvalue()
           </select>
           <span className={`health ${runtimeHealth}`}>runtime: {runtimeHealth}</span>
           <button onClick={() => setShowHelp(true)}>Help</button>
+          <button onClick={() => setSemanticHighlightingEnabled((v) => !v)}>
+            Semantic: {semanticHighlightingEnabled ? 'On' : 'Off'}
+          </button>
           <button onClick={toggleAICoach}>AI Coach</button>
         </div>
       </header>
@@ -411,7 +484,7 @@ buf.getvalue()
             value={activeFile ? files[activeFile] : ''}
             onChange={(v) => activeFile && setFiles((p) => ({ ...p, [activeFile]: v ?? '' }))}
             theme="vs-dark"
-            options={{ minimap: { enabled: false }, fontSize: 14, lineNumbers: 'on' }}
+            options={{ minimap: { enabled: false }, fontSize: 14, lineNumbers: 'on', semanticHighlighting: { enabled: semanticHighlightingEnabled } } as any}
           />
         </div>
 
