@@ -28,6 +28,14 @@ const chapters: Chapter[] = [
       'pages/login_page.resource': `*** Variables ***\n${'$'}{LOGIN_USER}    css:#username\n${'$'}{LOGIN_PASS}    css:#password\n\n*** Keywords ***\nGiven User Opens Login Page\n    Log    Open login page\nWhen User Signs In\n    Log    Type creds and submit\nThen User Should Reach Home\n    Log    Assert /home`,
     },
   },
+  { id: '3', title: 'Data-Driven Tests', objective: 'Use templates and variable-driven scenarios.', files: { 'tests/03_data_driven.robot': `*** Settings ***\nTest Template    Login Template\n\n*** Test Cases ***\nvalid user    demo    pass\nadmin user    admin   pass\n\n*** Keywords ***\nLogin Template\n    [Arguments]    ${'$'}{user}    ${'$'}{pwd}\n    Log    Login ${'$'}{user}` } },
+  { id: '4', title: 'Tags + Selection', objective: 'Organize by smoke/regression tags.', files: { 'tests/04_tags.robot': `*** Test Cases ***\nCheckout Smoke\n    [Tags]    smoke\n    Log    smoke\n\nDeep Regression\n    [Tags]    regression\n    Log    regression` } },
+  { id: '5', title: 'Setup/Teardown', objective: 'Suite and test lifecycle hooks.', files: { 'tests/05_setup.robot': `*** Settings ***\nSuite Setup    Log    Suite start\nSuite Teardown    Log    Suite end\n\n*** Test Cases ***\nCase A\n    [Setup]    Log    Test setup\n    Log    Body\n    [Teardown]    Log    Test teardown` } },
+  { id: '6', title: 'Resource Reuse', objective: 'Split reusable keywords across resource files.', files: { 'tests/06_resources.robot': `*** Settings ***\nResource    ../resources/api.resource\n\n*** Test Cases ***\nCall API\n    Ping API`, 'resources/api.resource': `*** Keywords ***\nPing API\n    Log    GET /health` } },
+  { id: '7', title: 'Variables Override CLI', objective: 'Practice -v and --variablefile usage.', files: { 'tests/07_override.robot': `*** Settings ***\nVariables    ../resources/env.py\n\n*** Test Cases ***\nEnv Sample\n    Log    ${'$'}{BASE_URL}`, 'resources/env.py': `BASE_URL='https://dev.example'`, 'README-run.md': `robot -v BASE_URL:https://staging.example tests/07_override.robot` } },
+  { id: '8', title: 'Reports + Logs', objective: 'Generate output.xml, log.html, report.html.', files: { 'tests/08_reports.robot': `*** Test Cases ***\nReport Demo\n    Log    report ready`, 'README-run.md': `robot --output output.xml --log log.html --report report.html tests/08_reports.robot` } },
+  { id: '9', title: 'Page Object Style Suite', objective: 'Compose suite with multiple page resources.', files: { 'tests/09_suite.robot': `*** Settings ***\nResource    ../pages/home.resource\nResource    ../pages/cart.resource\n\n*** Test Cases ***\nBuy Product\n    Open Home\n    Add To Cart`, 'pages/home.resource': `*** Keywords ***\nOpen Home\n    Log    open home`, 'pages/cart.resource': `*** Keywords ***\nAdd To Cart\n    Log    add to cart` } },
+  { id: '10', title: 'Mini Capstone', objective: 'Combine structure, tags, resources, and CLI.', files: { 'tests/10_capstone.robot': `*** Settings ***\nResource    ../resources/common.resource\nTest Tags    smoke\n\n*** Test Cases ***\nCapstone Flow\n    Open App\n    Login As Default User`, 'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    app\nLogin As Default User\n    Log    user` } },
 ]
 
 async function ensurePyodideAndRobot(setTerminal: (x: (prev: string[]) => string[]) => void) {
@@ -285,9 +293,9 @@ buf.getvalue()
       </main>
 
       <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`}>
-        <div className="right-head">
-          {rightOpen ? <strong>AI Coach</strong> : <strong>AI</strong>}
-          <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? '⟩' : '⟨'}</button>
+        <div className="right-head" title="AI Coach panel">
+          {rightOpen ? <strong>AI Coach</strong> : <strong>AI Coach</strong>}
+          <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? 'Close' : 'Open'}</button>
         </div>
         {rightOpen && (
           <>
