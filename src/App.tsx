@@ -68,9 +68,12 @@ function App() {
   const [activeFile, setActiveFile] = useState(Object.keys(selectedChapter.files)[0])
   const [terminal, setTerminal] = useState<string[]>(['Robot IDE ready. Type a command below.'])
   const [cmd, setCmd] = useState('robot tests/01_foundation.robot')
+  const [lastCmd, setLastCmd] = useState('robot tests/01_foundation.robot')
   const [rightOpen, setRightOpen] = useState(false)
-  const [aiText, setAiText] = useState('Click "Grade Chapter Task" to open AI Coach.')
+  const [aiText, setAiText] = useState('Click "Check My Solution" to open AI Coach.')
   const [output, setOutput] = useState('')
+  const [runtimeHealth, setRuntimeHealth] = useState<'ok'|'degraded'>('ok')
+  const [fetchError, setFetchError] = useState('')
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -153,6 +156,8 @@ function App() {
   const runCommand = async () => {
     const command = cmd.trim()
     if (!command) return
+    setLastCmd(command)
+    setFetchError('')
     setTerminal((p) => [...p, `$ ${command}`])
 
     try {
@@ -190,6 +195,7 @@ buf.getvalue()
         const text = String(result || '').trim() || '(no output)'
         setTerminal((p) => [...p, text])
         setOutput(text)
+        setRuntimeHealth('ok')
       } else if (command === 'help') {
         setTerminal((p) => [...p, 'Commands:', 'robot <suite.robot>', 'help', 'clear'])
       } else if (command === 'clear') {
@@ -198,7 +204,12 @@ buf.getvalue()
         setTerminal((p) => [...p, 'Unknown command. Try: help'])
       }
     } catch (e) {
-      setTerminal((p) => [...p, `Error: ${(e as Error).message}`])
+      const msg = (e as Error).message
+      setTerminal((p) => [...p, `Error: ${msg}`])
+      setRuntimeHealth('degraded')
+      if (/fetch|network|resolve|dns/i.test(msg)) {
+        setFetchError(`Runtime fetch failed: ${msg}`)
+      }
     }
   }
 
@@ -221,6 +232,7 @@ buf.getvalue()
           <select value={selectedChapterId} onChange={(e) => loadChapter(e.target.value)}>
             {chapters.map((c) => <option key={c.id} value={c.id}>Chapter {c.id}: {c.title}</option>)}
           </select>
+          <span className={`health ${runtimeHealth}`}>runtime: {runtimeHealth}</span>
           <button onClick={gradeChapterTask}>Check My Solution</button>
         </div>
       </header>
@@ -256,6 +268,12 @@ buf.getvalue()
           options={{ minimap: { enabled: false }, fontSize: 14 }}
         />
         <div className="terminal">
+          {fetchError && (
+            <div className="error-banner">
+              <span>{fetchError}</span>
+              <button onClick={() => { setCmd(lastCmd); runCommand() }}>Retry</button>
+            </div>
+          )}
           <div className="terminal-log">
             {terminal.slice(-120).map((line, i) => <div key={i}>{line}</div>)}
           </div>
@@ -279,6 +297,7 @@ buf.getvalue()
           </>
         )}
       </aside>
+      <div className="build-stamp">build {(import.meta as any).env?.VITE_BUILD_ID || 'local'}</div>
     </div>
   )
 }
