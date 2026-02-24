@@ -134,6 +134,8 @@ function App() {
   const [contextMenu, setContextMenu] = useState<{x:number;y:number;file:string}|null>(null)
   const [coachInput, setCoachInput] = useState('')
   const [coachChat, setCoachChat] = useState<Array<{role:'user'|'assistant'; text:string}>>([])
+  const [coachTopPct, setCoachTopPct] = useState(55)
+  const [isResizingCoach, setIsResizingCoach] = useState(false)
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -310,12 +312,19 @@ buf.getvalue()
     const q = coachInput.trim()
     if (!q) return
     const activeText = files[activeFile] || ''
-    const response = [
-      `For chapter ${selectedChapter.id} (${selectedChapter.title}):`,
-      q.toLowerCase().includes('error') ? 'Check terminal logs first, then verify Settings/Test Cases sections.' : 'Start by improving keyword readability and reducing duplicated steps.',
-      activeText.includes('*** Test Cases ***') ? 'Your active file has a Test Cases section.' : 'Your active file is missing a Test Cases section.',
-      `Tip: run \`${lastCmd}\` and review artifacts/logs.`
-    ].join(' ')
+    const ql = q.toLowerCase()
+
+    let response = ''
+    if (ql.includes('what') && (ql.includes('program') || ql.includes('app') || ql.includes('do'))) {
+      response = `This app is a browser-based Robot Framework learning IDE. You pick a chapter, edit multi-file Robot projects, run Robot CLI in-browser, and review generated artifacts (report/log/output) in the left Artifacts panel.`
+    } else if (ql.includes('error') || ql.includes('failed') || ql.includes('fetch')) {
+      response = `Debug flow: (1) read latest terminal lines, (2) rerun the same command, (3) verify file path and Settings/Test Cases blocks, (4) open artifacts/log if generated. If it's fetch/network, retry runtime bootstrap and check connectivity.`
+    } else if (ql.includes('report') || ql.includes('artifact')) {
+      response = `Run with explicit artifact args, e.g. robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot. Then open artifacts from the left panel to preview content.`
+    } else {
+      response = `For chapter ${selectedChapter.id} (${selectedChapter.title}), focus on objective: ${selectedChapter.objective}. Your active file is ${activeText.includes('*** Test Cases ***') ? 'structured with Test Cases' : 'missing Test Cases section'}. Next step: run \`${lastCmd}\` and inspect terminal + artifacts.`
+    }
+
     setCoachChat((c) => [...c, { role: 'user', text: q }, { role: 'assistant', text: response }])
     setCoachInput('')
     setRightOpen(true)
@@ -345,6 +354,14 @@ buf.getvalue()
       setHistoryIdx(nextIdx)
       setCmd(nextIdx === -1 ? '' : cmdHistory[nextIdx])
     }
+  }
+
+  const onCoachMouseMove = (e: MouseEvent<HTMLElement>) => {
+    if (!isResizingCoach) return
+    const el = e.currentTarget as HTMLElement
+    const rect = el.getBoundingClientRect()
+    const pct = Math.min(80, Math.max(30, ((e.clientY - rect.top) / rect.height) * 100))
+    setCoachTopPct(pct)
   }
 
   return (
@@ -431,27 +448,30 @@ buf.getvalue()
         </div>
       </main>
 
-      <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`}>
-        <div className="right-head" title="AI Coach panel">
-          <strong>AI Coach</strong>
-          <button onClick={toggleAICoach}>{rightOpen ? 'Close' : 'Open'}</button>
-        </div>
+      <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`} onMouseMove={onCoachMouseMove} onMouseUp={() => setIsResizingCoach(false)} onMouseLeave={() => setIsResizingCoach(false)}>
         {rightOpen && (
           <>
-            <div className="coach-actions">
+            <div className="right-head" title="AI Coach panel">
               <button onClick={gradeChapterTask}>Check Solution</button>
             </div>
-            <pre className="coach">{aiText}</pre>
-            <h4>CLI Output</h4>
-            <pre className="coach">{output || 'No output yet.'}</pre>
-            <h4>Ask AI Coach</h4>
-            <div className="coach-chat">
-              {coachChat.length === 0 && <div className="coach-empty">Ask anything about current chapter, file, or terminal error.</div>}
-              {coachChat.map((m, i) => <div key={i} className={`bubble ${m.role}`}>{m.text}</div>)}
-            </div>
-            <div className="coach-input">
-              <input value={coachInput} onChange={(e) => setCoachInput(e.target.value)} placeholder="Ask a question..." onKeyDown={(e) => e.key === 'Enter' && sendCoachMessage()} />
-              <button onClick={sendCoachMessage}>Send</button>
+            <div className="coach-layout" style={{ gridTemplateRows: `${coachTopPct}% 8px auto` }}>
+              <div className="coach-top">
+                <pre className="coach">{aiText}</pre>
+                <h4>CLI Output</h4>
+                <pre className="coach">{output || 'No output yet.'}</pre>
+              </div>
+              <div className="coach-splitter" onMouseDown={() => setIsResizingCoach(true)} title="Drag to resize" />
+              <div className="coach-bottom">
+                <h4>Ask AI Coach</h4>
+                <div className="coach-chat">
+                  {coachChat.length === 0 && <div className="coach-empty">Ask anything about current chapter, file, or terminal error.</div>}
+                  {coachChat.map((m, i) => <div key={i} className={`bubble ${m.role}`}>{m.text}</div>)}
+                </div>
+                <div className="coach-input">
+                  <input value={coachInput} onChange={(e) => setCoachInput(e.target.value)} placeholder="Ask a question..." onKeyDown={(e) => e.key === 'Enter' && sendCoachMessage()} />
+                  <button onClick={sendCoachMessage}>Send</button>
+                </div>
+              </div>
             </div>
           </>
         )}
