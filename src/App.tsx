@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from '
 import Editor from '@monaco-editor/react'
 import JSZip from 'jszip'
 import './App.css'
-import { generateCoachResponse } from './coach'
+import { generateCoachResponse, runCoachEval } from './coach'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
@@ -261,32 +261,18 @@ items
   }
 
   const runCoachSelfTest = () => {
-    const cases = [
-      { q: 'what does this program do', expect: ['learning IDE', 'Robot Framework'] },
-      { q: 'how to import zip', expect: ['Import expects a ZIP', 'tests/*.robot'] },
-      { q: 'I get fetch failed error', expect: ['Debug checklist', 'retry runtime bootstrap'] },
-      { q: 'how to generate report', expect: ['--output artifacts/output.xml', 'artifacts'] },
-      { q: 'improve my test quality', expect: ['objective', 'Structure check'] },
-    ]
-
-    let pass = 0
-    const lines = cases.map((c, i) => {
-      const r = generateCoachResponse(c.q, {
-        chapterId: selectedChapter.id,
-        chapterTitle: selectedChapter.title,
-        objective: selectedChapter.objective,
-        activeFile,
-        activeText: files[activeFile] || '',
-        lastCmd,
-        terminalTail: terminal.slice(-10),
-        artifacts: artifacts.map((a) => a.path),
-      })
-      const ok = c.expect.every((k) => r.toLowerCase().includes(k.toLowerCase()))
-      if (ok) pass += 1
-      return `${ok ? 'PASS' : 'FAIL'} [${i + 1}] ${c.q}`
+    const result = runCoachEval({
+      chapterId: selectedChapter.id,
+      chapterTitle: selectedChapter.title,
+      objective: selectedChapter.objective,
+      activeFile,
+      activeText: files[activeFile] || '',
+      lastCmd,
+      terminalTail: terminal.slice(-10),
+      artifacts: artifacts.map((a) => a.path),
     })
 
-    const summary = [`Coach self-test: ${pass}/${cases.length} passing`, ...lines].join('\n')
+    const summary = [`Coach self-test: ${result.pass}/${result.total} passing`, ...result.lines].join('\n')
     setTerminal((p) => [...p, summary])
     setOutput(summary)
   }
