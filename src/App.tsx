@@ -64,20 +64,28 @@ function App() {
   const [files, setFiles] = useState<FileMap>(starterTemplates['Smoke Test'])
   const [activeFile, setActiveFile] = useState(Object.keys(starterTemplates['Smoke Test'])[0])
   const [rfVersion, setRfVersion] = useState('6.1')
-  const [output, setOutput] = useState('Welcome. Start with a template and run checks.')
+  const [output, setOutput] = useState('Welcome. Start with template → edit → run check.')
   const [running, setRunning] = useState(false)
   const [aiStatus, setAiStatus] = useState('Not initialized')
   const [aiRoute, setAiRoute] = useState<AIRoute>('heuristic')
   const [engine, setEngine] = useState<any>(null)
+  const [showGuide, setShowGuide] = useState(true)
+  const [toast, setToast] = useState('')
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
+
+  const pulse = (msg: string) => {
+    setToast(msg)
+    window.setTimeout(() => setToast(''), 1800)
+  }
 
   const createFile = () => {
     const name = prompt('New file path (example: tests/new.robot)')
     if (!name || files[name]) return
     setFiles((prev) => ({ ...prev, [name]: '*** Test Cases ***\nNew Test\n    Log    Hello' }))
     setActiveFile(name)
+    pulse('File created')
   }
 
   const renameFile = () => {
@@ -91,6 +99,7 @@ function App() {
       return clone
     })
     setActiveFile(next)
+    pulse('File renamed')
   }
 
   const deleteFile = () => {
@@ -102,6 +111,7 @@ function App() {
     })
     const remaining = fileList.filter((f) => f !== activeFile)
     setActiveFile(remaining[0] || '')
+    pulse('File deleted')
   }
 
   const loadTemplate = (name: string) => {
@@ -109,17 +119,18 @@ function App() {
     setFiles(tpl)
     setActiveFile(Object.keys(tpl)[0])
     setOutput(`Loaded template: ${name}`)
+    pulse(`Template: ${name}`)
   }
 
   const runValidation = () => {
     const text = files[activeFile] || ''
     const hasSection = text.includes('*** Test Cases ***')
-    const msg = [
+    setOutput([
       `Robot Framework v${rfVersion} check complete`,
       hasSection ? '✔ Test Cases section found' : '✖ Missing *** Test Cases *** section',
       `File: ${activeFile}`,
-    ].join('\n')
-    setOutput(msg)
+    ].join('\n'))
+    pulse('Validation complete')
   }
 
   const runPyodideCheck = async () => {
@@ -136,6 +147,7 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
 'Pyodide runtime check complete\\nTest Cases section: ' + ('FOUND' if has_tc else 'MISSING') + '\\nLine count: ' + str(len(lines))
       `)
       setOutput(String(result))
+      pulse('Runtime check complete')
     } catch (e) {
       setOutput(`Runtime error: ${(e as Error).message}`)
     } finally {
@@ -150,25 +162,20 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
       const primary = 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC'
       const fallback = 'Llama-3.2-1B-Instruct-q4f16_1-MLC'
       try {
-        const e = await webllm.CreateMLCEngine(primary, {
-          initProgressCallback: (p: any) => setAiStatus(`WebLLM primary: ${Math.round((p.progress || 0) * 100)}%`),
-        })
+        const e = await webllm.CreateMLCEngine(primary, { initProgressCallback: (p: any) => setAiStatus(`WebLLM primary: ${Math.round((p.progress || 0) * 100)}%`) })
         setEngine(e)
         setAiRoute('webllm-primary')
         setAiStatus(`Ready with ${primary}`)
-        return
       } catch {
-        const e2 = await webllm.CreateMLCEngine(fallback, {
-          initProgressCallback: (p: any) => setAiStatus(`WebLLM fallback: ${Math.round((p.progress || 0) * 100)}%`),
-        })
+        const e2 = await webllm.CreateMLCEngine(fallback, { initProgressCallback: (p: any) => setAiStatus(`WebLLM fallback: ${Math.round((p.progress || 0) * 100)}%`) })
         setEngine(e2)
         setAiRoute('webllm-fallback')
         setAiStatus(`Ready with ${fallback}`)
-        return
       }
+      pulse('AI initialized')
     } catch {
       setAiRoute('wllama-fallback')
-      setAiStatus('WebLLM unavailable. wllama fallback hook is reserved for GGUF integration in next patch.')
+      setAiStatus('WebLLM unavailable. wllama GGUF fallback will be wired in next patch.')
     }
   }
 
@@ -185,7 +192,6 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
       setOutput(r.choices?.[0]?.message?.content || 'No response')
       return
     }
-
     const hints = []
     if (!text.includes('*** Test Cases ***')) hints.push('Add *** Test Cases *** section.')
     if (!text.includes('*** Settings ***')) hints.push('Add *** Settings *** for clearer dependencies.')
@@ -204,6 +210,7 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
     a.download = 'robot-framework-ide-project.zip'
     a.click()
     URL.revokeObjectURL(url)
+    pulse('Project exported')
   }
 
   const importProject = async (file?: File) => {
@@ -219,14 +226,16 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
       setFiles(next)
       setActiveFile(keys.sort()[0])
       setOutput(`Imported ${keys.length} files from ${file.name}`)
+      pulse('Project imported')
     }
   }
 
   return (
     <div className="layout">
+      {toast && <div className="toast">{toast}</div>}
       <aside className="sidebar">
         <h2>Robot Framework IDE</h2>
-        <p className="subtle">Beautiful, browser-native, product-grade authoring for Robot Framework.</p>
+        <p className="subtle">Premium browser-native authoring. Built to feel obvious from first click.</p>
         <label>Robot Version</label>
         <select value={rfVersion} onChange={(e) => setRfVersion(e.target.value)}>
           {rfVersions.map((v) => <option key={v} value={v}>v{v}</option>)}
@@ -260,8 +269,23 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
       <main className="main">
         <div className="hero">
           <h1>Ship Robot tests faster, with confidence.</h1>
-          <p>No manual required: pick a template, edit in the center pane, run checks, and get AI guidance.</p>
+          <p>Pick a template, edit, run checks, and ask AI for improvements.</p>
         </div>
+
+        {showGuide && (
+          <section className="guide">
+            <div className="guideHead">
+              <strong>Start in 30 seconds</strong>
+              <button className="ghost" onClick={() => setShowGuide(false)}>Hide</button>
+            </div>
+            <div className="steps">
+              <div><span>1</span>Choose <b>Best Practice</b> template</div>
+              <div><span>2</span>Edit steps in the center editor</div>
+              <div><span>3</span>Click <b>Run Check</b> then <b>Explain with AI</b></div>
+            </div>
+          </section>
+        )}
+
         <div className="toolbar">
           <span>{activeFile || 'No file selected'}</span>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -271,13 +295,14 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
             <button onClick={explainWithAI} disabled={!activeFile}>Explain with AI</button>
           </div>
         </div>
+
         <Editor
-          height="52vh"
+          height="50vh"
           language="python"
           value={activeFile ? files[activeFile] : ''}
           onChange={(v) => activeFile && setFiles((prev) => ({ ...prev, [activeFile]: v ?? '' }))}
           theme="vs-dark"
-          options={{ minimap: { enabled: false }, fontSize: 14, smoothScrolling: true }}
+          options={{ minimap: { enabled: false }, fontSize: 14, smoothScrolling: true, cursorBlinking: 'smooth' }}
         />
 
         <section className="panels">
@@ -289,9 +314,7 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
             <h3>AI Route</h3>
             <p><strong>Current route:</strong> {aiRoute}</p>
             <p><strong>Status:</strong> {aiStatus}</p>
-            <p className="subtle">
-              Route order: WebLLM primary (Qwen2.5 1.5B) → WebLLM fallback (Llama 3.2 1B) → wllama fallback → heuristic.
-            </p>
+            <p className="subtle">Route: Qwen 1.5B → Llama 1B → wllama fallback hook → heuristic.</p>
           </div>
         </section>
       </main>
