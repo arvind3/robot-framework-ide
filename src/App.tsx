@@ -268,8 +268,8 @@ buf.getvalue()
 
       <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`}>
         <div className="right-head">
-          <strong>AI Coach</strong>
-          <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? 'Collapse' : 'Open'}</button>
+          {rightOpen ? <strong>AI Coach</strong> : <strong>AI</strong>}
+          <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? '⟩' : '⟨'}</button>
         </div>
         {rightOpen && (
           <>
