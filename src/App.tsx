@@ -5,37 +5,66 @@ import './App.css'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
+type Chapter = { id: string; title: string; objective: string; files: FileMap }
+type Artifact = { path: string; content: string }
 
-type Chapter = { id: string; title: string; files: FileMap; objective: string }
+const mkChapter = (id: number, title: string, objective: string, files: FileMap): Chapter => ({ id: String(id), title, objective, files })
 
 const chapters: Chapter[] = [
-  {
-    id: '1',
-    title: 'Foundations: Variables + Keywords',
-    objective: 'Learn multi-file structure and shared keywords.',
-    files: {
-      'tests/01_foundation.robot': `*** Settings ***\nVariables    ../resources/variables.py\nResource     ../resources/common.resource\n\n*** Test Cases ***\nSample Smoke\n    Open App\n    Login As Default User`,
-      'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    Opening ${'$'}{BASE_URL}\n\nLogin As Default User\n    Log    Login with ${'$'}{DEFAULT_USER}`,
-      'resources/variables.py': `BASE_URL = "https://example.test"\nDEFAULT_USER = "demo.user"\n`,
-    },
-  },
-  {
-    id: '2',
-    title: 'POM + Locators',
-    objective: 'Use page object resources and locator variables.',
-    files: {
-      'tests/02_pom.robot': `*** Settings ***\nResource    ../pages/login_page.resource\n\n*** Test Cases ***\nLogin Through POM\n    Given User Opens Login Page\n    When User Signs In\n    Then User Should Reach Home`,
-      'pages/login_page.resource': `*** Variables ***\n${'$'}{LOGIN_USER}    css:#username\n${'$'}{LOGIN_PASS}    css:#password\n\n*** Keywords ***\nGiven User Opens Login Page\n    Log    Open login page\nWhen User Signs In\n    Log    Type creds and submit\nThen User Should Reach Home\n    Log    Assert /home`,
-    },
-  },
-  { id: '3', title: 'Data-Driven Tests', objective: 'Use templates and variable-driven scenarios.', files: { 'tests/03_data_driven.robot': `*** Settings ***\nTest Template    Login Template\n\n*** Test Cases ***\nvalid user    demo    pass\nadmin user    admin   pass\n\n*** Keywords ***\nLogin Template\n    [Arguments]    ${'$'}{user}    ${'$'}{pwd}\n    Log    Login ${'$'}{user}` } },
-  { id: '4', title: 'Tags + Selection', objective: 'Organize by smoke/regression tags.', files: { 'tests/04_tags.robot': `*** Test Cases ***\nCheckout Smoke\n    [Tags]    smoke\n    Log    smoke\n\nDeep Regression\n    [Tags]    regression\n    Log    regression` } },
-  { id: '5', title: 'Setup/Teardown', objective: 'Suite and test lifecycle hooks.', files: { 'tests/05_setup.robot': `*** Settings ***\nSuite Setup    Log    Suite start\nSuite Teardown    Log    Suite end\n\n*** Test Cases ***\nCase A\n    [Setup]    Log    Test setup\n    Log    Body\n    [Teardown]    Log    Test teardown` } },
-  { id: '6', title: 'Resource Reuse', objective: 'Split reusable keywords across resource files.', files: { 'tests/06_resources.robot': `*** Settings ***\nResource    ../resources/api.resource\n\n*** Test Cases ***\nCall API\n    Ping API`, 'resources/api.resource': `*** Keywords ***\nPing API\n    Log    GET /health` } },
-  { id: '7', title: 'Variables Override CLI', objective: 'Practice -v and --variablefile usage.', files: { 'tests/07_override.robot': `*** Settings ***\nVariables    ../resources/env.py\n\n*** Test Cases ***\nEnv Sample\n    Log    ${'$'}{BASE_URL}`, 'resources/env.py': `BASE_URL='https://dev.example'`, 'README-run.md': `robot -v BASE_URL:https://staging.example tests/07_override.robot` } },
-  { id: '8', title: 'Reports + Logs', objective: 'Generate output.xml, log.html, report.html.', files: { 'tests/08_reports.robot': `*** Test Cases ***\nReport Demo\n    Log    report ready`, 'README-run.md': `robot --output output.xml --log log.html --report report.html tests/08_reports.robot` } },
-  { id: '9', title: 'Page Object Style Suite', objective: 'Compose suite with multiple page resources.', files: { 'tests/09_suite.robot': `*** Settings ***\nResource    ../pages/home.resource\nResource    ../pages/cart.resource\n\n*** Test Cases ***\nBuy Product\n    Open Home\n    Add To Cart`, 'pages/home.resource': `*** Keywords ***\nOpen Home\n    Log    open home`, 'pages/cart.resource': `*** Keywords ***\nAdd To Cart\n    Log    add to cart` } },
-  { id: '10', title: 'Mini Capstone', objective: 'Combine structure, tags, resources, and CLI.', files: { 'tests/10_capstone.robot': `*** Settings ***\nResource    ../resources/common.resource\nTest Tags    smoke\n\n*** Test Cases ***\nCapstone Flow\n    Open App\n    Login As Default User`, 'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    app\nLogin As Default User\n    Log    user` } },
+  mkChapter(1, 'Foundations: Variables + Keywords', 'Learn multi-file structure and shared keywords.', {
+    'tests/01_foundation.robot': `*** Settings ***\nVariables    ../resources/variables.py\nResource     ../resources/common.resource\n\n*** Test Cases ***\nSample Smoke\n    Open App\n    Login As Default User`,
+    'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    Opening ${'$'}{BASE_URL}\n\nLogin As Default User\n    Log    Login with ${'$'}{DEFAULT_USER}`,
+    'resources/variables.py': `BASE_URL = "https://example.test"\nDEFAULT_USER = "demo.user"\n`,
+  }),
+  mkChapter(2, 'POM + Locators', 'Use page object resources and locator variables.', {
+    'tests/02_pom.robot': `*** Settings ***\nResource    ../pages/login_page.resource\n\n*** Test Cases ***\nLogin Through POM\n    Given User Opens Login Page\n    When User Signs In\n    Then User Should Reach Home`,
+    'pages/login_page.resource': `*** Variables ***\n${'$'}{LOGIN_USER}    css:#username\n${'$'}{LOGIN_PASS}    css:#password\n\n*** Keywords ***\nGiven User Opens Login Page\n    Log    Open login page\nWhen User Signs In\n    Log    Type creds and submit\nThen User Should Reach Home\n    Log    Assert /home`,
+  }),
+  mkChapter(3, 'Data-Driven Tests', 'Use templates and variable-driven scenarios.', {
+    'tests/03_data.robot': `*** Settings ***\nTest Template    Login Template\n\n*** Test Cases ***\nvalid user    demo    pass\nadmin user    admin   pass\n\n*** Keywords ***\nLogin Template\n    [Arguments]    ${'$'}{u}    ${'$'}{p}\n    Log    ${'$'}{u}`,
+  }),
+  mkChapter(4, 'Tags + Selection', 'Organize test selection with tags.', {
+    'tests/04_tags.robot': `*** Test Cases ***\nCheckout Smoke\n    [Tags]    smoke\n    Log    smoke\n\nDeep Regression\n    [Tags]    regression\n    Log    regression`,
+  }),
+  mkChapter(5, 'Setup/Teardown', 'Use suite and test lifecycle hooks.', {
+    'tests/05_lifecycle.robot': `*** Settings ***\nSuite Setup    Log    Suite start\nSuite Teardown    Log    Suite end\n\n*** Test Cases ***\nCase A\n    [Setup]    Log    Test setup\n    Log    body\n    [Teardown]    Log    Test teardown`,
+  }),
+  mkChapter(6, 'Resource Reuse', 'Reuse keywords from resources.', {
+    'tests/06_reuse.robot': `*** Settings ***\nResource    ../resources/api.resource\n\n*** Test Cases ***\nCall API\n    Ping API`,
+    'resources/api.resource': `*** Keywords ***\nPing API\n    Log    GET /health`,
+  }),
+  mkChapter(7, 'CLI Variable Override', 'Practice -v and --variablefile patterns.', {
+    'tests/07_override.robot': `*** Settings ***\nVariables    ../resources/env.py\n\n*** Test Cases ***\nEnv Sample\n    Log    ${'$'}{BASE_URL}`,
+    'resources/env.py': `BASE_URL='https://dev.example'`,
+    'README-run.md': `robot -v BASE_URL:https://staging.example tests/07_override.robot`,
+  }),
+  mkChapter(8, 'Reports + Logs', 'Generate output.xml/log.html/report.html.', {
+    'tests/08_reports.robot': `*** Test Cases ***\nReport Demo\n    Log    report ready`,
+    'README-run.md': `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html tests/08_reports.robot`,
+  }),
+  mkChapter(9, 'Page Object Suite', 'Compose suites from multiple page resources.', {
+    'tests/09_suite.robot': `*** Settings ***\nResource    ../pages/home.resource\nResource    ../pages/cart.resource\n\n*** Test Cases ***\nBuy Product\n    Open Home\n    Add To Cart`,
+    'pages/home.resource': `*** Keywords ***\nOpen Home\n    Log    open home`,
+    'pages/cart.resource': `*** Keywords ***\nAdd To Cart\n    Log    add to cart`,
+  }),
+  mkChapter(10, 'Mini Capstone', 'Combine tags, resources, and variable practices.', {
+    'tests/10_capstone.robot': `*** Settings ***\nResource    ../resources/common.resource\nTest Tags    smoke\n\n*** Test Cases ***\nCapstone Flow\n    Open App\n    Login As Default User`,
+    'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    app\nLogin As Default User\n    Log    user`,
+  }),
+  mkChapter(11, 'Assertions Deep Dive', 'Write clear assertions and negative checks.', {
+    'tests/11_assertions.robot': `*** Test Cases ***\nAssert Equal\n    Should Be Equal    abc    abc\n\nAssert Contains\n    Should Contain    hello world    world`,
+  }),
+  mkChapter(12, 'Control Flow', 'Use FOR/IF for robust workflow logic.', {
+    'tests/12_control.robot': `*** Test Cases ***\nLoop Example\n    FOR    ${'$'}{i}    IN RANGE    3\n        Log    ${'$'}{i}\n    END`,
+  }),
+  mkChapter(13, 'CLI-First Pipeline', 'Structure commands for CI/CD style execution.', {
+    'tests/13_pipeline.robot': `*** Test Cases ***\nPipeline Smoke\n    Log    pipeline`,
+    'README-run.md': `robot --xunit artifacts/xunit.xml tests/13_pipeline.robot`,
+  }),
+  mkChapter(14, 'Final Project', 'Bring all patterns together in one suite.', {
+    'tests/14_final.robot': `*** Settings ***\nResource    ../resources/common.resource\n\n*** Test Cases ***\nEnd To End\n    Open App\n    Login As Default User\n    Log    final`,
+    'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    open\nLogin As Default User\n    Log    login`,
+  }),
 ]
 
 async function ensurePyodideAndRobot(setTerminal: (x: (prev: string[]) => string[]) => void) {
@@ -82,6 +111,7 @@ function App() {
   const [output, setOutput] = useState('')
   const [runtimeHealth, setRuntimeHealth] = useState<'ok'|'degraded'>('ok')
   const [fetchError, setFetchError] = useState('')
+  const [artifacts, setArtifacts] = useState<Artifact[]>([])
   const importRef = useRef<HTMLInputElement>(null)
 
   const fileList = useMemo(() => Object.keys(files).sort(), [files])
@@ -93,6 +123,7 @@ function App() {
     setFiles(c.files)
     setActiveFile(Object.keys(c.files).sort()[0])
     setTerminal((p) => [...p, `Loaded chapter ${id}: ${c.title}`])
+    setArtifacts([])
   }
 
   const createFile = () => {
@@ -103,7 +134,7 @@ function App() {
   }
 
   const createFolder = () => {
-    const folder = prompt('New folder name (example: pages)')
+    const folder = prompt('New folder name')
     if (!folder) return
     const placeholder = `${folder}/.keep`
     if (files[placeholder]) return
@@ -131,20 +162,17 @@ function App() {
       delete c[activeFile]
       return c
     })
-    const next = fileList.filter((f) => f !== activeFile)[0] || ''
-    setActiveFile(next)
+    setActiveFile(fileList.find((f) => f !== activeFile) || '')
   }
 
   const exportZip = async () => {
     const zip = new JSZip()
     Object.entries(files).forEach(([k, v]) => zip.file(k, v))
     const blob = await zip.generateAsync({ type: 'blob' })
-    const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url
+    a.href = URL.createObjectURL(blob)
     a.download = `chapter-${selectedChapterId}.zip`
     a.click()
-    URL.revokeObjectURL(url)
   }
 
   const importZip = async (file?: File) => {
@@ -161,6 +189,39 @@ function App() {
     }
   }
 
+  const syncFilesToPyodide = async (pyodide: any) => {
+    await pyodide.runPythonAsync(`
+import os
+for p in ['tests','resources','pages','artifacts']:
+    os.makedirs(p, exist_ok=True)
+`)
+    for (const [path, content] of Object.entries(files)) {
+      const escaped = content.replace(/\\/g, '\\\\').replace(/`/g, '\\`')
+      const dir = path.includes('/') ? path.split('/').slice(0, -1).join('/') : ''
+      if (dir) await pyodide.runPythonAsync(`import os; os.makedirs('${dir}', exist_ok=True)`)
+      await pyodide.runPythonAsync(`open('${path}','w',encoding='utf-8').write('''${escaped}''')`)
+    }
+  }
+
+  const refreshArtifacts = async (pyodide: any) => {
+    const result = await pyodide.runPythonAsync(`
+import os
+items=[]
+if os.path.exists('artifacts'):
+  for n in os.listdir('artifacts'):
+    p='artifacts/'+n
+    if os.path.isfile(p):
+      try:
+        c=open(p,'r',encoding='utf-8',errors='ignore').read()
+      except:
+        c='[binary artifact]'
+      items.append((p,c[:200000]))
+items
+`)
+    const mapped = Array.isArray(result) ? result.map((x: any) => ({ path: x[0], content: x[1] })) : []
+    setArtifacts(mapped)
+  }
+
   const runCommand = async () => {
     const command = cmd.trim()
     if (!command) return
@@ -170,20 +231,7 @@ function App() {
 
     try {
       const pyodide = await ensurePyodideAndRobot(setTerminal)
-
-      // sync editor files to pyodide FS
-      await pyodide.runPythonAsync(`
-import os
-for p in ['tests','resources','pages','artifacts']:
-    os.makedirs(p, exist_ok=True)
-`)
-      for (const [path, content] of Object.entries(files)) {
-        const escaped = content.replace(/\\/g, '\\\\').replace(/`/g, '\\`')
-        const dir = path.includes('/') ? path.split('/').slice(0, -1).join('/') : ''
-        if (dir) await pyodide.runPythonAsync(`import os; os.makedirs('${dir}', exist_ok=True)`)
-        await pyodide.runPythonAsync(`open('${path}','w',encoding='utf-8').write(
-'''${escaped}''')`)
-      }
+      await syncFilesToPyodide(pyodide)
 
       if (command.startsWith('robot ')) {
         const args = command.replace(/^robot\s+/, '').split(' ').filter(Boolean)
@@ -191,10 +239,9 @@ for p in ['tests','resources','pages','artifacts']:
 from robot import run_cli
 import io, contextlib
 buf = io.StringIO()
-code = 0
 try:
     with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-        code = run_cli(${JSON.stringify(args)}, exit=False)
+        run_cli(${JSON.stringify(args)}, exit=False)
 except Exception as e:
     buf.write(str(e))
 buf.getvalue()
@@ -204,8 +251,9 @@ buf.getvalue()
         setTerminal((p) => [...p, text])
         setOutput(text)
         setRuntimeHealth('ok')
+        await refreshArtifacts(pyodide)
       } else if (command === 'help') {
-        setTerminal((p) => [...p, 'Commands:', 'robot <suite.robot>', 'help', 'clear'])
+        setTerminal((p) => [...p, 'Commands: robot <suite.robot>, help, clear'])
       } else if (command === 'clear') {
         setTerminal(['Terminal cleared.'])
       } else {
@@ -215,9 +263,7 @@ buf.getvalue()
       const msg = (e as Error).message
       setTerminal((p) => [...p, `Error: ${msg}`])
       setRuntimeHealth('degraded')
-      if (/fetch|network|resolve|dns/i.test(msg)) {
-        setFetchError(`Runtime fetch failed: ${msg}`)
-      }
+      if (/fetch|network|resolve|dns/i.test(msg)) setFetchError(`Runtime fetch failed: ${msg}`)
     }
   }
 
@@ -225,7 +271,12 @@ buf.getvalue()
     setRightOpen(true)
     const text = files[activeFile] || ''
     const score = [text.includes('*** Settings ***'), text.includes('*** Test Cases ***'), text.length > 40].filter(Boolean).length
-    setAiText(`Chapter: ${selectedChapter.title}\n\nObjective: ${selectedChapter.objective}\n\nRubric score: ${score}/3\n- Include Settings\n- Include Test Cases\n- Add meaningful steps`) 
+    setAiText(`Chapter: ${selectedChapter.title}\n\nObjective: ${selectedChapter.objective}\n\nRubric score: ${score}/3\n- Include Settings\n- Include Test Cases\n- Add meaningful steps`)
+  }
+
+  const openArtifact = (a: Artifact) => {
+    setRightOpen(true)
+    setAiText(`Artifact: ${a.path}\n\n${a.content.slice(0, 5000)}`)
   }
 
   return (
@@ -255,26 +306,35 @@ buf.getvalue()
             <button title="Delete" onClick={deleteFile}>Delete</button>
           </div>
         </div>
+
         <div className="icon-actions block">
           <button onClick={exportZip}>Export</button>
           <button onClick={() => importRef.current?.click()}>Import</button>
           <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importZip(e.target.files?.[0])} />
         </div>
+
         <ul className="filetree">
-          {fileList.map((f) => <li key={f} className={f === activeFile ? 'active' : ''} onClick={() => setActiveFile(f)}>{f}</li>)}
+          {fileList.map((f) => <li key={f} className={f === activeFile ? 'active' : ''} onClick={() => setActiveFile(f)} title={f}>{f}</li>)}
+        </ul>
+
+        <h4 className="artifacts-title">Artifacts</h4>
+        <ul className="filetree artifacts-list">
+          {artifacts.length === 0 && <li className="muted-li">No artifacts yet</li>}
+          {artifacts.map((a) => <li key={a.path} onClick={() => openArtifact(a)} title={a.path}>{a.path}</li>)}
         </ul>
       </aside>
 
       <main className="center">
         <div className="editor-head">{activeFile || 'No file selected'}</div>
         <Editor
-          height="48vh"
-          language="python"
+          height="50vh"
+          language={activeFile.endsWith('.robot') || activeFile.endsWith('.resource') ? 'python' : 'plaintext'}
           value={activeFile ? files[activeFile] : ''}
           onChange={(v) => activeFile && setFiles((p) => ({ ...p, [activeFile]: v ?? '' }))}
           theme="vs-dark"
-          options={{ minimap: { enabled: false }, fontSize: 14 }}
+          options={{ minimap: { enabled: false }, fontSize: 14, lineNumbers: 'on' }}
         />
+
         <div className="terminal">
           {fetchError && (
             <div className="error-banner">
@@ -283,7 +343,7 @@ buf.getvalue()
             </div>
           )}
           <div className="terminal-log">
-            {terminal.slice(-120).map((line, i) => <div key={i}>{line}</div>)}
+            {terminal.slice(-160).map((line, i) => <div key={i}>{line}</div>)}
           </div>
           <div className="terminal-input">
             <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="robot tests/01_foundation.robot" onKeyDown={(e) => e.key === 'Enter' && runCommand()} />
@@ -294,7 +354,7 @@ buf.getvalue()
 
       <aside className={`right ${rightOpen ? 'open' : 'collapsed'}`}>
         <div className="right-head" title="AI Coach panel">
-          {rightOpen ? <strong>AI Coach</strong> : <strong>AI Coach</strong>}
+          <strong>AI Coach</strong>
           <button onClick={() => setRightOpen((x) => !x)}>{rightOpen ? 'Close' : 'Open'}</button>
         </div>
         {rightOpen && (
@@ -305,6 +365,7 @@ buf.getvalue()
           </>
         )}
       </aside>
+
       <div className="build-stamp">build {(import.meta as any).env?.VITE_BUILD_ID || 'local'}</div>
     </div>
   )
