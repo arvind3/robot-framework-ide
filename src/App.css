@@ -13,7 +13,7 @@ button{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 1
 h4{margin:8px 10px;color:#cbd5e1}
 h3{margin:0;color:#e2e8f0}
 
-.left{border-right:1px solid #233046;background:#0f172a;padding:10px;overflow:auto;min-width:0}
+.left{border-right:1px solid #233046;background:#0f172a;padding:10px;overflow:auto;min-width:0;display:flex;flex-direction:column}
 .explorer-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .icon-actions{display:flex;gap:6px;flex-wrap:wrap}
 .icon-actions button{padding:6px 8px;font-size:12px}
@@ -23,6 +23,8 @@ h3{margin:0;color:#e2e8f0}
 .filetree li:hover{background:#1e293b}
 .filetree li.active{background:#1d4ed833}
 .artifacts-title{margin:14px 0 6px;color:#9fb4d5;font-size:12px}
+.artifacts-list{max-height:160px;overflow:auto}
+.left-footer{margin-top:auto;display:flex;gap:8px;padding-top:10px;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(15,23,42,0),rgba(15,23,42,1) 25%)}
 .muted-li{color:#7b8aa3;font-style:italic}
 
 .center{display:flex;flex-direction:column;min-width:0}
@@ -39,7 +41,7 @@ h3{margin:0;color:#e2e8f0}
 .right-head{display:flex;justify-content:flex-start;align-items:center;padding:10px;border-bottom:1px solid #233046;gap:8px}
 .coach-layout{display:grid;height:calc(100% - 52px)}
 .coach-top{overflow:auto}
-.coach-bottom{overflow:auto;display:flex;flex-direction:column}
+.coach-bottom{overflow:auto;display:flex;flex-direction:column;min-height:0}
 .coach-splitter{cursor:row-resize;background:#1f2b3d;border-top:1px solid #2f3f56;border-bottom:1px solid #2f3f56}
 .coach-splitter:hover{background:#2a3a53}
 .coach{padding:10px;margin:0;white-space:pre-wrap;font-size:12px;color:#d9e5ff;max-height:22vh;overflow:auto}
@@ -48,7 +50,7 @@ h3{margin:0;color:#e2e8f0}
 .bubble{padding:8px;border-radius:8px;font-size:12px;white-space:pre-wrap}
 .bubble.user{background:#1d4ed833;border:1px solid #1d4ed8}
 .bubble.assistant{background:#1f2937;border:1px solid #334155}
-.coach-input{display:flex;gap:8px;padding:10px}
+.coach-input{display:flex;gap:8px;padding:10px;position:sticky;bottom:0;background:#0f172a;border-top:1px solid #233046}
 .coach-input input{flex:1;background:#111827;color:#e5eefc;border:1px solid #334155;border-radius:8px;padding:8px}
 
 .context-menu{position:fixed;z-index:30;background:#111827;border:1px solid #334155;border-radius:8px;padding:6px;display:grid;gap:6px;min-width:120px;box-shadow:0 8px 24px rgba(0,0,0,.35)}

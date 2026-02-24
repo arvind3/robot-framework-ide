@@ -2,6 +2,7 @@ import { useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from '
 import Editor from '@monaco-editor/react'
 import JSZip from 'jszip'
 import './App.css'
+import { generateCoachResponse } from './coach'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
@@ -259,6 +260,37 @@ items
     setArtifacts(mapped)
   }
 
+  const runCoachSelfTest = () => {
+    const cases = [
+      { q: 'what does this program do', expect: ['learning IDE', 'Robot Framework'] },
+      { q: 'how to import zip', expect: ['Import expects a ZIP', 'tests/*.robot'] },
+      { q: 'I get fetch failed error', expect: ['Debug checklist', 'retry runtime bootstrap'] },
+      { q: 'how to generate report', expect: ['--output artifacts/output.xml', 'artifacts'] },
+      { q: 'improve my test quality', expect: ['objective', 'Structure check'] },
+    ]
+
+    let pass = 0
+    const lines = cases.map((c, i) => {
+      const r = generateCoachResponse(c.q, {
+        chapterId: selectedChapter.id,
+        chapterTitle: selectedChapter.title,
+        objective: selectedChapter.objective,
+        activeFile,
+        activeText: files[activeFile] || '',
+        lastCmd,
+        terminalTail: terminal.slice(-10),
+        artifacts: artifacts.map((a) => a.path),
+      })
+      const ok = c.expect.every((k) => r.toLowerCase().includes(k.toLowerCase()))
+      if (ok) pass += 1
+      return `${ok ? 'PASS' : 'FAIL'} [${i + 1}] ${c.q}`
+    })
+
+    const summary = [`Coach self-test: ${pass}/${cases.length} passing`, ...lines].join('\n')
+    setTerminal((p) => [...p, summary])
+    setOutput(summary)
+  }
+
   const runCommand = async () => {
     const command = cmd.trim()
     if (!command) return
@@ -292,7 +324,9 @@ buf.getvalue()
         setRuntimeHealth('ok')
         await refreshArtifacts(pyodide)
       } else if (command === 'help') {
-        setTerminal((p) => [...p, 'Commands: robot <suite.robot>, help, clear'])
+        setTerminal((p) => [...p, 'Commands: robot <suite.robot>, coach:selftest, help, clear'])
+      } else if (command === 'coach:selftest') {
+        runCoachSelfTest()
       } else if (command === 'clear') {
         setTerminal(['Terminal cleared.'])
       } else {
@@ -324,19 +358,17 @@ buf.getvalue()
   const sendCoachMessage = () => {
     const q = coachInput.trim()
     if (!q) return
-    const activeText = files[activeFile] || ''
-    const ql = q.toLowerCase()
 
-    let response = ''
-    if (ql.includes('what') && (ql.includes('program') || ql.includes('app') || ql.includes('do'))) {
-      response = `This app is a browser-based Robot Framework learning IDE. You pick a chapter, edit multi-file Robot projects, run Robot CLI in-browser, and review generated artifacts (report/log/output) in the left Artifacts panel.`
-    } else if (ql.includes('error') || ql.includes('failed') || ql.includes('fetch')) {
-      response = `Debug flow: (1) read latest terminal lines, (2) rerun the same command, (3) verify file path and Settings/Test Cases blocks, (4) open artifacts/log if generated. If it's fetch/network, retry runtime bootstrap and check connectivity.`
-    } else if (ql.includes('report') || ql.includes('artifact')) {
-      response = `Run with explicit artifact args, e.g. robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html <suite>.robot. Then open artifacts from the left panel to preview content.`
-    } else {
-      response = `For chapter ${selectedChapter.id} (${selectedChapter.title}), focus on objective: ${selectedChapter.objective}. Your active file is ${activeText.includes('*** Test Cases ***') ? 'structured with Test Cases' : 'missing Test Cases section'}. Next step: run \`${lastCmd}\` and inspect terminal + artifacts.`
-    }
+    const response = generateCoachResponse(q, {
+      chapterId: selectedChapter.id,
+      chapterTitle: selectedChapter.title,
+      objective: selectedChapter.objective,
+      activeFile,
+      activeText: files[activeFile] || '',
+      lastCmd,
+      terminalTail: terminal.slice(-10),
+      artifacts: artifacts.map((a) => a.path),
+    })
 
     setCoachChat((c) => [...c, { role: 'user', text: q }, { role: 'assistant', text: response }])
     setCoachInput('')
@@ -406,12 +438,6 @@ buf.getvalue()
           </div>
         </div>
 
-        <div className="icon-actions block">
-          <button onClick={exportZip}>Export</button>
-          <button onClick={() => importRef.current?.click()}>Import</button>
-          <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importZip(e.target.files?.[0])} />
-        </div>
-
         <ul className="filetree" onClick={closeContextMenu}>
           {fileList.map((f) => (
             <li
@@ -431,6 +457,12 @@ buf.getvalue()
           {artifacts.length === 0 && <li className="muted-li">No artifacts yet</li>}
           {artifacts.map((a) => <li key={a.path} onClick={() => openArtifact(a)} title={a.path}>{a.path}</li>)}
         </ul>
+
+        <div className="left-footer">
+          <button onClick={exportZip}>Export</button>
+          <button onClick={() => importRef.current?.click()}>Import</button>
+          <input ref={importRef} type="file" accept=".zip" style={{ display: 'none' }} onChange={(e) => importZip(e.target.files?.[0])} />
+        </div>
       </aside>
 
       <main className="center">
