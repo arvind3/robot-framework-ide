@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-02-24T17:31:15.836Z",
+    "generatedAt": "2026-02-24T17:46:54.518Z",
     "totalCases": 120,
     "passed": 120,
     "failed": 0,
@@ -97,7 +97,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -108,7 +108,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-01-introduction-IMPORT_ZIP",
@@ -563,7 +563,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -574,7 +574,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-02-installation-concepts-IMPORT_ZIP",
@@ -1029,7 +1029,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -1040,7 +1040,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-03-robot-framework-basics-IMPORT_ZIP",
@@ -1495,7 +1495,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -1506,7 +1506,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-04-multi-file-architecture-IMPORT_ZIP",
@@ -1961,7 +1961,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -1972,7 +1972,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-05-advanced-keywords-IMPORT_ZIP",
@@ -2427,7 +2427,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -2438,7 +2438,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-06-python-integration-IMPORT_ZIP",
@@ -2893,7 +2893,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -2904,7 +2904,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-07-best-practices-IMPORT_ZIP",
@@ -3359,7 +3359,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -3370,7 +3370,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-08-enterprise-patterns-IMPORT_ZIP",
@@ -3825,7 +3825,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -3836,7 +3836,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-09-real-world-case-study-IMPORT_ZIP",
@@ -4291,7 +4291,7 @@
         ],
         "artifacts": []
       },
-      "actual": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
+      "actual": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.",
       "pass": true,
       "missing": [],
       "forbidden": [],
@@ -4302,7 +4302,7 @@
         "Validate response content rules (must include / must not include)"
       ],
       "expectedResult": "Response should include: Robot Framework, IDE; and should NOT include: Context:",
-      "actualResult": "This is a browser-based Robot Framework learning IDE. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
+      "actualResult": "This is Robot Framework IDE — Browser-first LocalAI Dev Platform. You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html). Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach."
     },
     {
       "id": "chapter-10-final-capstone-project-IMPORT_ZIP",

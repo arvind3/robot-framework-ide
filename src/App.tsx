@@ -347,7 +347,7 @@ buf.getvalue()
       <header className="topbar">
         <div className="brand">
           <strong>Robot Framework IDE</strong>
-          <span className="muted">Browser-first learning lab</span>
+          <span className="muted">Browser-first LocalAI Dev Platform</span>
         </div>
         <div className="top-actions">
           <label>Chapter</label>

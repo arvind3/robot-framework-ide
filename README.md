@@ -1,6 +1,6 @@
-# Robot Framework IDE (Browser-first)
+# Robot Framework IDE — Browser-first LocalAI Dev Platform
 
-In-browser Robot Framework IDE with chapter-driven learning, CLI execution, and an AI Coach.
+Browser-first Robot Framework IDE with chapter-driven learning, CLI execution, and an AI Coach.
 
 Live app: https://arvind3.github.io/robot-framework-ide/
 

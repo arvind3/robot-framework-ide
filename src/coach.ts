@@ -33,7 +33,7 @@ export function generateCoachResponse(question: string, ctx: CoachContext): stri
 
   if (has(q, ['what does this program do', 'what this program do', 'what does this app do', 'explain this program'])) {
     return [
-      'This is a browser-based Robot Framework learning IDE.',
+      'This is Robot Framework IDE — Browser-first LocalAI Dev Platform.',
       'You load a chapter, edit multi-file tests, run Robot CLI in-browser, then inspect artifacts (output.xml/log.html/report.html).',
       'Flow: Chapter → Edit → Execute CLI → Review Artifacts → Ask AI Coach.',
     ].join(' ')
