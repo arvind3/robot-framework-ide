@@ -3,70 +3,13 @@ import Editor from '@monaco-editor/react'
 import JSZip from 'jszip'
 import './App.css'
 import { generateCoachResponse, runCoachEval } from './coach'
+import { bookChapters, type Chapter } from './bookChapters'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
-type Chapter = { id: string; title: string; objective: string; files: FileMap }
 type Artifact = { path: string; content: string }
 
-const mkChapter = (id: number, title: string, objective: string, files: FileMap): Chapter => ({ id: String(id), title, objective, files })
-
-const chapters: Chapter[] = [
-  mkChapter(1, 'Foundations: Variables + Keywords', 'Learn multi-file structure and shared keywords.', {
-    'tests/01_foundation.robot': `*** Settings ***\nVariables    ../resources/variables.py\nResource     ../resources/common.resource\n\n*** Test Cases ***\nSample Smoke\n    Open App\n    Login As Default User`,
-    'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    Opening ${'$'}{BASE_URL}\n\nLogin As Default User\n    Log    Login with ${'$'}{DEFAULT_USER}`,
-    'resources/variables.py': `BASE_URL = "https://example.test"\nDEFAULT_USER = "demo.user"\n`,
-  }),
-  mkChapter(2, 'POM + Locators', 'Use page object resources and locator variables.', {
-    'tests/02_pom.robot': `*** Settings ***\nResource    ../pages/login_page.resource\n\n*** Test Cases ***\nLogin Through POM\n    Given User Opens Login Page\n    When User Signs In\n    Then User Should Reach Home`,
-    'pages/login_page.resource': `*** Variables ***\n${'$'}{LOGIN_USER}    css:#username\n${'$'}{LOGIN_PASS}    css:#password\n\n*** Keywords ***\nGiven User Opens Login Page\n    Log    Open login page\nWhen User Signs In\n    Log    Type creds and submit\nThen User Should Reach Home\n    Log    Assert /home`,
-  }),
-  mkChapter(3, 'Data-Driven Tests', 'Use templates and variable-driven scenarios.', {
-    'tests/03_data.robot': `*** Settings ***\nTest Template    Login Template\n\n*** Test Cases ***\nvalid user    demo    pass\nadmin user    admin   pass\n\n*** Keywords ***\nLogin Template\n    [Arguments]    ${'$'}{u}    ${'$'}{p}\n    Log    ${'$'}{u}`,
-  }),
-  mkChapter(4, 'Tags + Selection', 'Organize test selection with tags.', {
-    'tests/04_tags.robot': `*** Test Cases ***\nCheckout Smoke\n    [Tags]    smoke\n    Log    smoke\n\nDeep Regression\n    [Tags]    regression\n    Log    regression`,
-  }),
-  mkChapter(5, 'Setup/Teardown', 'Use suite and test lifecycle hooks.', {
-    'tests/05_lifecycle.robot': `*** Settings ***\nSuite Setup    Log    Suite start\nSuite Teardown    Log    Suite end\n\n*** Test Cases ***\nCase A\n    [Setup]    Log    Test setup\n    Log    body\n    [Teardown]    Log    Test teardown`,
-  }),
-  mkChapter(6, 'Resource Reuse', 'Reuse keywords from resources.', {
-    'tests/06_reuse.robot': `*** Settings ***\nResource    ../resources/api.resource\n\n*** Test Cases ***\nCall API\n    Ping API`,
-    'resources/api.resource': `*** Keywords ***\nPing API\n    Log    GET /health`,
-  }),
-  mkChapter(7, 'CLI Variable Override', 'Practice -v and --variablefile patterns.', {
-    'tests/07_override.robot': `*** Settings ***\nVariables    ../resources/env.py\n\n*** Test Cases ***\nEnv Sample\n    Log    ${'$'}{BASE_URL}`,
-    'resources/env.py': `BASE_URL='https://dev.example'`,
-    'README-run.md': `robot -v BASE_URL:https://staging.example tests/07_override.robot`,
-  }),
-  mkChapter(8, 'Reports + Logs', 'Generate output.xml/log.html/report.html.', {
-    'tests/08_reports.robot': `*** Test Cases ***\nReport Demo\n    Log    report ready`,
-    'README-run.md': `robot --output artifacts/output.xml --log artifacts/log.html --report artifacts/report.html tests/08_reports.robot`,
-  }),
-  mkChapter(9, 'Page Object Suite', 'Compose suites from multiple page resources.', {
-    'tests/09_suite.robot': `*** Settings ***\nResource    ../pages/home.resource\nResource    ../pages/cart.resource\n\n*** Test Cases ***\nBuy Product\n    Open Home\n    Add To Cart`,
-    'pages/home.resource': `*** Keywords ***\nOpen Home\n    Log    open home`,
-    'pages/cart.resource': `*** Keywords ***\nAdd To Cart\n    Log    add to cart`,
-  }),
-  mkChapter(10, 'Mini Capstone', 'Combine tags, resources, and variable practices.', {
-    'tests/10_capstone.robot': `*** Settings ***\nResource    ../resources/common.resource\nTest Tags    smoke\n\n*** Test Cases ***\nCapstone Flow\n    Open App\n    Login As Default User`,
-    'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    app\nLogin As Default User\n    Log    user`,
-  }),
-  mkChapter(11, 'Assertions Deep Dive', 'Write clear assertions and negative checks.', {
-    'tests/11_assertions.robot': `*** Test Cases ***\nAssert Equal\n    Should Be Equal    abc    abc\n\nAssert Contains\n    Should Contain    hello world    world`,
-  }),
-  mkChapter(12, 'Control Flow', 'Use FOR/IF for robust workflow logic.', {
-    'tests/12_control.robot': `*** Test Cases ***\nLoop Example\n    FOR    ${'$'}{i}    IN RANGE    3\n        Log    ${'$'}{i}\n    END`,
-  }),
-  mkChapter(13, 'CLI-First Pipeline', 'Structure commands for CI/CD style execution.', {
-    'tests/13_pipeline.robot': `*** Test Cases ***\nPipeline Smoke\n    Log    pipeline`,
-    'README-run.md': `robot --xunit artifacts/xunit.xml tests/13_pipeline.robot`,
-  }),
-  mkChapter(14, 'Final Project', 'Bring all patterns together in one suite.', {
-    'tests/14_final.robot': `*** Settings ***\nResource    ../resources/common.resource\n\n*** Test Cases ***\nEnd To End\n    Open App\n    Login As Default User\n    Log    final`,
-    'resources/common.resource': `*** Keywords ***\nOpen App\n    Log    open\nLogin As Default User\n    Log    login`,
-  }),
-]
+const chapters: Chapter[] = bookChapters
 
 async function ensurePyodideAndRobot(setTerminal: (x: (prev: string[]) => string[]) => void) {
   const w = window as PyodideWindow
@@ -122,8 +65,8 @@ function App() {
   const [files, setFiles] = useState<FileMap>(selectedChapter.files)
   const [activeFile, setActiveFile] = useState(Object.keys(selectedChapter.files)[0])
   const [terminal, setTerminal] = useState<string[]>(['Robot IDE ready. Type a command below.'])
-  const [cmd, setCmd] = useState('robot tests/01_foundation.robot')
-  const [lastCmd, setLastCmd] = useState('robot tests/01_foundation.robot')
+  const [cmd, setCmd] = useState(`robot ${selectedChapter.entrypoint}`)
+  const [lastCmd, setLastCmd] = useState(`robot ${selectedChapter.entrypoint}`)
   const [cmdHistory, setCmdHistory] = useState<string[]>([])
   const [historyIdx, setHistoryIdx] = useState(-1)
   const [rightOpen, setRightOpen] = useState(false)
@@ -149,6 +92,8 @@ function App() {
     setFiles(c.files)
     setActiveFile(Object.keys(c.files).sort()[0])
     setTerminal((p) => [...p, `Loaded chapter ${id}: ${c.title}`])
+    setCmd(`robot ${c.entrypoint}`)
+    setLastCmd(`robot ${c.entrypoint}`)
     setArtifacts([])
   }
 
@@ -476,7 +421,7 @@ buf.getvalue()
             {terminal.slice(-160).map((line, i) => <div key={i}>{line}</div>)}
           </div>
           <div className="terminal-input">
-            <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder="robot tests/01_foundation.robot" onKeyDown={onCmdKeyDown} />
+            <input value={cmd} onChange={(e) => setCmd(e.target.value)} placeholder={`robot ${selectedChapter.entrypoint}`} onKeyDown={onCmdKeyDown} />
             <button onClick={runCommand}>Execute CLI</button>
           </div>
         </div>
