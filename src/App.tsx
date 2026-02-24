@@ -210,6 +210,7 @@ lines = robot_text.splitlines()
   }
 
   const initAI = async () => {
+    if (engine) return engine
     setAiStatus('Initializing...')
     try {
       const webllm = await import('@mlc-ai/web-llm')
@@ -218,23 +219,26 @@ lines = robot_text.splitlines()
         setEngine(e)
         setAiRoute('webllm-primary')
         setAiStatus('Ready with Qwen2.5-1.5B')
+        return e
       } catch {
         const e2 = await webllm.CreateMLCEngine('Llama-3.2-1B-Instruct-q4f16_1-MLC')
         setEngine(e2)
         setAiRoute('webllm-fallback')
         setAiStatus('Ready with Llama-3.2-1B')
+        return e2
       }
-      pulse('AI initialized')
     } catch {
       setAiRoute('wllama-fallback')
       setAiStatus('WebLLM unavailable. Fallback hook active.')
+      return null
     }
   }
 
   const checkMySolution = async () => {
     const text = files[activeFile] || ''
-    if (engine) {
-      const r = await engine.chat.completions.create({
+    const activeEngine = engine || await initAI()
+    if (activeEngine) {
+      const r = await activeEngine.chat.completions.create({
         messages: [
           { role: 'system', content: 'Grade this Robot Framework solution with concise feedback.' },
           { role: 'user', content: `Rubric:\n- ${selectedChapter.rubric.join('\n- ')}\n\nFile:\n${text}` },
@@ -328,7 +332,6 @@ lines = robot_text.splitlines()
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <button onClick={runValidation} disabled={!activeFile}>Run Check</button>
             <button onClick={runPyodideCheck} disabled={!activeFile || running}>{running ? 'Running...' : 'Run Runtime Check'}</button>
-            <button onClick={initAI}>Init AI</button>
             <button onClick={checkMySolution} disabled={!activeFile}>Check My Solution</button>
           </div>
         </div>
