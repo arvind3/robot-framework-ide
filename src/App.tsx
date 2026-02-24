@@ -42,6 +42,97 @@ Then dashboard is visible
   },
 }
 
+const learningPaths: Array<{ name: string; outcomes: string[]; files: FileMap }> = [
+  {
+    name: 'Variables + Keywords + Multi-file Basics',
+    outcomes: ['Use Variables file', 'Share keywords via resource', 'Run one suite with clean structure'],
+    files: {
+      'tests/01_variables_keywords.robot': `*** Settings ***
+Variables    ../resources/variables.py
+Resource     ../resources/common.resource
+
+*** Test Cases ***
+Login With Shared Data
+    Open App
+    Login As Default User
+    Verify Dashboard Title
+`,
+      'resources/common.resource': `*** Keywords ***
+Open App
+    Log    Opening ${'$'}{BASE_URL}
+
+Login As Default User
+    Log    Login with ${'$'}{DEFAULT_USER}
+
+Verify Dashboard Title
+    Should Be Equal    ${'$'}{EXPECTED_TITLE}    Demo Dashboard
+`,
+      'resources/variables.py': `BASE_URL = "https://example.test"
+DEFAULT_USER = "demo.user"
+EXPECTED_TITLE = "Demo Dashboard"
+`,
+    },
+  },
+  {
+    name: 'POM + Locators + Override Variables',
+    outcomes: ['Separate locators into one file', 'Use page object keywords', 'Override env from CLI variable'],
+    files: {
+      'tests/02_pom_style.robot': `*** Settings ***
+Variables    ../resources/env.py
+Resource     ../pages/login_page.resource
+
+*** Test Cases ***
+Login Through POM
+    Given User Opens Login Page
+    When User Signs In
+    Then User Should Reach Home
+`,
+      'pages/login_page.resource': `*** Variables ***
+${'$'}{LOGIN_USER_INPUT}    css:#username
+${'$'}{LOGIN_PASS_INPUT}    css:#password
+${'$'}{LOGIN_BUTTON}        css:button[type="submit"]
+
+*** Keywords ***
+Given User Opens Login Page
+    Log    Open ${'$'}{APP_URL}
+
+When User Signs In
+    Log    Type into ${'$'}{LOGIN_USER_INPUT}
+    Log    Type into ${'$'}{LOGIN_PASS_INPUT}
+    Log    Click ${'$'}{LOGIN_BUTTON}
+
+Then User Should Reach Home
+    Log    Assert URL contains /home
+`,
+      'resources/env.py': `APP_URL = "https://example.test/login"
+`,
+      'README-run.md': `Run with override example:\nrobot -v APP_URL:https://staging.example.test/login tests/02_pom_style.robot`,
+    },
+  },
+  {
+    name: 'Reports + Tags + Suite Metadata',
+    outcomes: ['Add docs/tags for maintainability', 'Generate report/log/output files', 'Model production-style suite metadata'],
+    files: {
+      'tests/03_reporting.robot': `*** Settings ***
+Documentation    Example suite for report and log generation
+Metadata         Owner    QA Team
+Metadata         Sprint   Sprint-12
+Test Tags        smoke    reporting
+
+*** Test Cases ***
+Checkout Smoke
+    [Documentation]    Validates core checkout path
+    Log    Checkout flow pass
+
+Profile Update Smoke
+    [Documentation]    Validates profile update
+    Log    Profile update pass
+`,
+      'README-run.md': `Suggested command:\nrobot --output output.xml --log log.html --report report.html tests/03_reporting.robot`,
+    },
+  },
+]
+
 async function ensurePyodide() {
   const w = window as PyodideWindow
   if (w.__pyodide) return w.__pyodide
@@ -120,6 +211,16 @@ function App() {
     setActiveFile(Object.keys(tpl)[0])
     setOutput(`Loaded template: ${name}`)
     pulse(`Template: ${name}`)
+  }
+
+  const loadLearningPath = (name: string) => {
+    const pack = learningPaths.find((x) => x.name === name)
+    if (!pack) return
+    setFiles(pack.files)
+    const first = Object.keys(pack.files).sort()[0]
+    setActiveFile(first)
+    setOutput(`Loaded lesson: ${pack.name}\n\nYou will learn:\n- ${pack.outcomes.join('\n- ')}`)
+    pulse('Lesson loaded')
   }
 
   const runValidation = () => {
@@ -263,6 +364,11 @@ has_tc = any('*** Test Cases ***' in x for x in lines)
         <h3>Starter Templates</h3>
         <div className="templateButtons">
           {Object.keys(starterTemplates).map((name) => <button key={name} onClick={() => loadTemplate(name)}>{name}</button>)}
+        </div>
+
+        <h3>Guided Learning Paths</h3>
+        <div className="templateButtons">
+          {learningPaths.map((p) => <button key={p.name} onClick={() => loadLearningPath(p.name)}>{p.name}</button>)}
         </div>
       </aside>
 
