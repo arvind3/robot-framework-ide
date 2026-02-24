@@ -4,6 +4,7 @@ import JSZip from 'jszip'
 import './App.css'
 import { generateCoachResponse, runCoachEval } from './coach'
 import { bookChapters, type Chapter } from './bookChapters'
+import { registerRobotSemanticProvider } from './robotSemanticProvider'
 
 type FileMap = Record<string, string>
 type PyodideWindow = Window & { loadPyodide?: (opts?: unknown) => Promise<any>; __pyodide?: any }
@@ -57,6 +58,7 @@ const configureRobotMonaco = (monaco: any) => {
       },
     })
   }
+  registerRobotSemanticProvider(monaco)
 }
 
 function App() {

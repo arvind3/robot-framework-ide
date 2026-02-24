@@ -1,4 +1,4 @@
-name: AI Coach Eval Gate
+name: AI Quality Eval Gate
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  eval-coach:
+  eval-quality:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run strict AI Coach eval gate
-        run: npm run eval:coach
+      - name: Run strict AI quality eval gates
+        run: npm run eval:all
 
       - name: Upload eval reports
         if: always()
@@ -37,3 +37,5 @@ jobs:
           path: |
             eval/ai-coach/reports/latest.md
             eval/ai-coach/reports/latest.json
+            eval/highlighting/reports/latest.md
+            eval/highlighting/reports/latest.json

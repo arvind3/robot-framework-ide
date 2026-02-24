@@ -14,6 +14,7 @@ Live app: https://arvind3.github.io/robot-framework-ide/
 - In-browser Robot execution flow with artifacts (`output.xml`, `log.html`, `report.html`)
 - ZIP import/export for full project handoff
 - AI Coach panel for chapter-aware guidance
+- Hybrid syntax highlighting: lexical (Monaco/TextMate-style) + local semantic tokens (worker-based)
 
 ---
 
@@ -48,15 +49,23 @@ A case passes only when:
 1. Prompt archetypes are defined in: `eval/ai-coach/prompt-archetypes.json`
 2. Chapter contexts are sourced from: `src/bookChapters.ts`
 3. Evaluator generates cross-product test cases and executes: `scripts/run-ai-coach-eval.mjs`
-4. Reports are generated to:
+4. Syntax-highlighting evaluator validates local semantic tokenization via: `scripts/run-highlighting-eval.mjs`
+5. Reports are generated to:
    - `eval/ai-coach/reports/latest.md`
    - `eval/ai-coach/reports/latest.json`
-5. Strict gate fails build if pass rate is below threshold
+   - `eval/highlighting/reports/latest.md`
+   - `eval/highlighting/reports/latest.json`
+6. Strict gate fails build if pass criteria is not met
 
 ### Always-latest report URLs
 
+AI Coach:
 - Markdown report: https://github.com/arvind3/robot-framework-ide/blob/main/eval/ai-coach/reports/latest.md
 - JSON report: https://github.com/arvind3/robot-framework-ide/blob/main/eval/ai-coach/reports/latest.json
+
+Syntax Highlighting:
+- Markdown report: https://github.com/arvind3/robot-framework-ide/blob/main/eval/highlighting/reports/latest.md
+- JSON report: https://github.com/arvind3/robot-framework-ide/blob/main/eval/highlighting/reports/latest.json
 
 ---
 
@@ -73,13 +82,26 @@ npm run dev
 npm run build
 ```
 
+## Syntax Highlighting Architecture (Local Option A)
+
+- Layer 1: Monaco lexical tokenization for instant baseline coloring
+- Layer 2: Worker-based local semantic analysis (`src/robotSemanticWorker.ts` + `src/robotSemanticCore.ts`)
+- Semantic tokens are provided to Monaco via `registerDocumentSemanticTokensProvider`
+- No backend dependency required for syntax highlighting
+
 ## AI Coach Eval Commands
 
 ```bash
-# strict quality gate (recommended for release)
+# strict AI coach gate
 npm run eval:coach
 
-# diagnostic run (never fails CI)
+# strict syntax-highlighting gate
+npm run eval:highlight
+
+# full quality gate (coach + highlighting)
+npm run eval:all
+
+# diagnostic coach run (never fails CI)
 npm run eval:coach:relaxed
 ```
 

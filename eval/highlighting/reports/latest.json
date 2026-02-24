@@ -1,0 +1,483 @@
+{
+  "summary": {
+    "generatedAt": "2026-02-24T18:07:24.049Z",
+    "total": 30,
+    "passed": 30,
+    "failed": 0,
+    "passRate": 100
+  },
+  "results": [
+    {
+      "id": "HEADER",
+      "expected": [
+        "header"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header"
+      ],
+      "tokenCount": 1,
+      "sample": "*** Settings ***"
+    },
+    {
+      "id": "HEADER_PIPE",
+      "expected": [
+        "header"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header"
+      ],
+      "tokenCount": 1,
+      "sample": "|    *** Settings ***"
+    },
+    {
+      "id": "VARIABLE",
+      "expected": [
+        "variable",
+        "keywordCall",
+        "argument"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "Log    ${USER}"
+    },
+    {
+      "id": "VARIABLE_PIPE",
+      "expected": [
+        "variable",
+        "keywordCall",
+        "argument"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "|    Log    ${USER}"
+    },
+    {
+      "id": "COMMENT_LINE",
+      "expected": [
+        "comment"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "comment"
+      ],
+      "tokenCount": 1,
+      "sample": "# comment only"
+    },
+    {
+      "id": "COMMENT_LINE_PIPE",
+      "expected": [
+        "comment"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "comment"
+      ],
+      "tokenCount": 1,
+      "sample": "|    # comment only"
+    },
+    {
+      "id": "INLINE_COMMENT",
+      "expected": [
+        "comment"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "argument",
+        "comment"
+      ],
+      "tokenCount": 3,
+      "sample": "Log    hello    # inline"
+    },
+    {
+      "id": "INLINE_COMMENT_PIPE",
+      "expected": [
+        "comment"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "argument",
+        "comment"
+      ],
+      "tokenCount": 3,
+      "sample": "|    Log    hello    # inline"
+    },
+    {
+      "id": "SETTING_KEYWORD",
+      "expected": [
+        "setting"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "setting",
+        "keywordCall",
+        "argument"
+      ],
+      "tokenCount": 4,
+      "sample": "*** Settings ***\nLibrary    SeleniumLibrary"
+    },
+    {
+      "id": "SETTING_KEYWORD_PIPE",
+      "expected": [
+        "setting"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "setting",
+        "keywordCall",
+        "argument"
+      ],
+      "tokenCount": 4,
+      "sample": "|    *** Settings ***\n|    Library    SeleniumLibrary"
+    },
+    {
+      "id": "TESTCASE_NAME",
+      "expected": [
+        "testCaseName"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName"
+      ],
+      "tokenCount": 2,
+      "sample": "*** Test Cases ***\nLogin smoke"
+    },
+    {
+      "id": "TESTCASE_NAME_PIPE",
+      "expected": [
+        "testCaseName"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName"
+      ],
+      "tokenCount": 2,
+      "sample": "|    *** Test Cases ***\n|    Login smoke"
+    },
+    {
+      "id": "KEYWORD_DEF",
+      "expected": [
+        "keywordDefinition"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "keywordDefinition"
+      ],
+      "tokenCount": 2,
+      "sample": "*** Keywords ***\nOpen App"
+    },
+    {
+      "id": "KEYWORD_DEF_PIPE",
+      "expected": [
+        "keywordDefinition"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "keywordDefinition"
+      ],
+      "tokenCount": 2,
+      "sample": "|    *** Keywords ***\n|    Open App"
+    },
+    {
+      "id": "KEYWORD_CALL",
+      "expected": [
+        "keywordCall",
+        "argument"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName",
+        "keywordCall",
+        "argument"
+      ],
+      "tokenCount": 4,
+      "sample": "*** Test Cases ***\nT\n    Open Browser    about:blank"
+    },
+    {
+      "id": "KEYWORD_CALL_PIPE",
+      "expected": [
+        "keywordCall",
+        "argument"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName",
+        "keywordCall",
+        "argument"
+      ],
+      "tokenCount": 4,
+      "sample": "|    *** Test Cases ***\n|    T\n|        Open Browser    about:blank"
+    },
+    {
+      "id": "CONTROL_IF",
+      "expected": [
+        "control",
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName",
+        "control",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 5,
+      "sample": "*** Test Cases ***\nT\n    IF    ${x}"
+    },
+    {
+      "id": "CONTROL_IF_PIPE",
+      "expected": [
+        "control",
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName",
+        "control",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 5,
+      "sample": "|    *** Test Cases ***\n|    T\n|        IF    ${x}"
+    },
+    {
+      "id": "CONTROL_FOR",
+      "expected": [
+        "control",
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName",
+        "control",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 5,
+      "sample": "*** Test Cases ***\nT\n    FOR    ${i}    IN RANGE    3"
+    },
+    {
+      "id": "CONTROL_FOR_PIPE",
+      "expected": [
+        "control",
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "testCaseName",
+        "control",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 5,
+      "sample": "|    *** Test Cases ***\n|    T\n|        FOR    ${i}    IN RANGE    3"
+    },
+    {
+      "id": "SETTING_BRACKET",
+      "expected": [
+        "setting"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "setting",
+        "keywordCall",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "[Documentation]    sample"
+    },
+    {
+      "id": "SETTING_BRACKET_PIPE",
+      "expected": [
+        "setting"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "setting",
+        "keywordCall",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "|    [Documentation]    sample"
+    },
+    {
+      "id": "DICT_VAR",
+      "expected": [
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "Log    &{cfg}"
+    },
+    {
+      "id": "DICT_VAR_PIPE",
+      "expected": [
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "|    Log    &{cfg}"
+    },
+    {
+      "id": "LIST_VAR",
+      "expected": [
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "Log    @{items}"
+    },
+    {
+      "id": "LIST_VAR_PIPE",
+      "expected": [
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "|    Log    @{items}"
+    },
+    {
+      "id": "PERCENT_VAR",
+      "expected": [
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "Log    %{HOME}"
+    },
+    {
+      "id": "PERCENT_VAR_PIPE",
+      "expected": [
+        "variable"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 3,
+      "sample": "|    Log    %{HOME}"
+    },
+    {
+      "id": "MIXED",
+      "expected": [
+        "keywordDefinition",
+        "setting",
+        "variable",
+        "keywordCall"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "keywordDefinition",
+        "setting",
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 9,
+      "sample": "*** Keywords ***\nDo Work\n    [Arguments]    ${u}\n    Log    ${u}"
+    },
+    {
+      "id": "MIXED_PIPE",
+      "expected": [
+        "keywordDefinition",
+        "setting",
+        "variable",
+        "keywordCall"
+      ],
+      "pass": true,
+      "missing": [],
+      "actualTypes": [
+        "header",
+        "keywordDefinition",
+        "setting",
+        "keywordCall",
+        "variable",
+        "argument"
+      ],
+      "tokenCount": 9,
+      "sample": "|    *** Keywords ***\n|    Do Work\n|        [Arguments]    ${u}\n|        Log    ${u}"
+    }
+  ]
+}
